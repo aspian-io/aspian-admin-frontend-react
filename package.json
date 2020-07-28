@@ -1,0 +1,28 @@
+{
+  "name": "aspian-admin-frontend",
+  "version": "1.0.0",
+  "description": "Admin dashboard (front-end) of ASPIAN CMS (aspian repo) created with React/MobX/TypeScript/Ant Design.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aspian-io/aspian-admin-frontend-react.git"
+  },
+  "keywords": [
+    "ASPIAN_CMS",
+    "ASPIAN_ADMIN",
+    "React",
+    "MobX",
+    "TypeScript",
+    "Ant",
+    "Design"
+  ],
+  "author": "Omid Rouhani",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aspian-io/aspian-admin-frontend-react/issues"
+  },
+  "homepage": "https://github.com/aspian-io/aspian-admin-frontend-react#readme"
+}
