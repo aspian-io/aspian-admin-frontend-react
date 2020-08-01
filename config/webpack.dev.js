@@ -35,7 +35,8 @@ module.exports = {
         },
       },
       {
-        test: /\.(le|c)ss$/,
+        test: /\.less$/,
+        exclude: [/node_modules\/(?!antd).*/],
         use: [
           'style-loader', // creates style nodes from JS strings
           'css-loader', // translates CSS into CommonJS
@@ -49,6 +50,25 @@ module.exports = {
             },
           }, // compiles less to CSS, using Node less by default
           //'sass-loader', // compiles Sass to CSS, using Node Sass by default
+        ],
+      },
+      {
+        test: /\.(sa|sc)ss$/,
+        exclude: /node_modules/,
+        use: [
+          'style-loader', // creates style nodes from JS strings
+          'css-loader', // translates CSS into CommonJS
+          'postcss-loader', // Loader for webpack to process CSS with PostCSS
+          'sass-loader', // compiles Sass to CSS, using Node Sass by default
+        ],
+      },
+      {
+        test: /\.css$/,
+        exclude: /node_modules\/(?!antd).*/,
+        use: [
+          'style-loader', // creates style nodes from JS strings
+          'css-loader', // translates CSS into CommonJS
+          'postcss-loader', // Loader for webpack to process CSS with PostCSS
         ],
       },
       {
@@ -113,7 +133,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ],
+    extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [
     // CleanWebpackPlugin will do some clean up/remove folder before build
