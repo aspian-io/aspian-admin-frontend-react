@@ -11,11 +11,7 @@ const { Sider } = Layout;
 const AspianSider: React.FC<IProps> = ({ collapsed }) => {
   return (
     <Sider
-      style={{
-        overflow: 'auto',
-        height: '100vh',
-        left: 0,
-      }}
+      className='dashboard__sider'
       trigger={null}
       collapsible
       collapsed={collapsed}

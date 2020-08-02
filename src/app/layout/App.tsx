@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Layout, ConfigProvider } from 'antd';
-import faIR from 'antd/es/locale/fa_IR';
+//import faIR from 'antd/es/locale/fa_IR';
 
 import AspianHeader from '../../features/layout/header/Header';
 import AspianContent from '../../features/layout/content/Content';
@@ -9,7 +9,7 @@ import AspianSider from '../../features/layout/sider/Sider';
 import AspianFooter from '../../features/layout/footer/Footer';
 
 import 'antd/dist/antd.css';
-import './styles.css';
+import '../../scss/pages/dashboard/_common.scss';
 
 const App: FC<WithTranslation> = ({ t }) => {
   const [collapsed, setCollapsed] = useState<boolean>(false);

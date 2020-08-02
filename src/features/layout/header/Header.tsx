@@ -12,11 +12,10 @@ const { Header } = Layout;
 const AspianHeader: React.FC<IProps> = ({ collapsed, toggle }) => {
   return (
     <Header
-      className="site-layout-background"
-      style={{ padding: 0, background: '#fff' }}
+      className="dashboard__header"
     >
       {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-        className: 'trigger',
+        className: 'dashboard__header--trigger',
         onClick: () => toggle(),
       })}
     </Header>

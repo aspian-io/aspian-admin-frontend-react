@@ -6,11 +6,10 @@ const { Content } = Layout;
 
 const AspianContent = () => {
     return (
-        <Content style={{ margin: '0 16px' }}>
+        <Content className="dashboard__content">
           <AspianBreadcrumb />
           <div
-            className="site-layout-background"
-            style={{ padding: 24, minHeight: 360 }}
+            className="dashboard__content-wrapper"
           >
             Bill is a cat.
           </div>
