@@ -14,9 +14,9 @@ export interface IPost {
   postHistories: number;
   comments: number;
   childPosts: number;
-  createdAt: Date;
+  createdAt: string;
   createdBy: User;
-  modifiedAt: Date;
+  modifiedAt: string;
   userAgent: string;
   userIPAddress: string;
   postAttachments: PostAttachment[];

@@ -1,5 +1,9 @@
 // Dashboard style
 .dashboard {
+  &__layout {
+    min-height: 100vh;
+  }
+
   &__header {
     background: #fff;
     padding: 0;
@@ -36,12 +40,16 @@
   }
 
   &__content {
-      margin: 0 1rem;
+    margin: 0 1rem;
 
-      &-wrapper {
-          background: #fff;
-          padding: 24px;
-          min-height: 360px;
-      }
+    &-wrapper {
+      background: #fff;
+      padding: 24px;
+      min-height: 360px;
+    }
+  }
+
+  &__breadcrumb {
+    margin: 1rem 0;
   }
 }
