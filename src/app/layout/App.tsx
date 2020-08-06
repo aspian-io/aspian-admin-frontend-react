@@ -1,8 +1,7 @@
 import React, { FC, useState, useEffect, useContext } from 'react';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { Layout, ConfigProvider, Breadcrumb, List, Typography } from 'antd';
-import { IPost } from '../models/post';
-import {observer} from 'mobx-react-lite';
+import { Layout, ConfigProvider, Breadcrumb } from 'antd';
+import { observer } from 'mobx-react-lite';
 //import faIR from 'antd/es/locale/fa_IR';
 
 import AspianHeader from '../../features/layout/header/Header';
@@ -11,17 +10,13 @@ import AspianFooter from '../../features/layout/footer/Footer';
 
 import 'antd/dist/antd.css';
 import '../../scss/pages/dashboard/_common.scss';
-import PostStore from '../stores/postStore';
+import PostList from '../../features/post/postList/PostList';
 
 const { Content } = Layout;
 
 const App: FC<WithTranslation> = ({ t }) => {
-  const postStore = useContext(PostStore);
   const [collapsed, setCollapsed] = useState<boolean>(false);
 
-  useEffect(() => {
-    postStore.loadPosts();
-  }, [postStore]);
 
   const toggle = () => {
     setCollapsed(!collapsed);
@@ -40,7 +35,7 @@ const App: FC<WithTranslation> = ({ t }) => {
               <Breadcrumb.Item>Bill</Breadcrumb.Item>
             </Breadcrumb>
             <div className="dashboard__content-wrapper">
-              <List
+              {/* <List
                 header={<div>Header</div>}
                 footer={<div>Footer</div>}
                 bordered
@@ -51,7 +46,8 @@ const App: FC<WithTranslation> = ({ t }) => {
                     <Typography.Text mark>[ITEM]</Typography.Text> {item.title}
                   </List.Item>
                 )}
-              />
+              /> */}
+              <PostList />
             </div>
           </Content>
           <AspianFooter />

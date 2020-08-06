@@ -19,7 +19,7 @@ export interface IPost {
   modifiedAt: string;
   userAgent: string;
   userIPAddress: string;
-  postAttachments: PostAttachment[];
+  postAttachments: number;
   taxonomyPosts: TaxonomyPosts[];
 }
 
@@ -50,10 +50,6 @@ interface User {
 
 interface PostAttachment {
   isMain: boolean;
-  attachmentId: string;
-}
-
-interface PostAttachment {
   attachment: Attachment;
 }
 
