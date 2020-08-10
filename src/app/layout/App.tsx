@@ -1,16 +1,16 @@
-import React, { FC, useState, useEffect, useContext } from 'react';
+import React, { FC, useState } from 'react';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Layout, ConfigProvider, Breadcrumb } from 'antd';
 import { observer } from 'mobx-react-lite';
 //import faIR from 'antd/es/locale/fa_IR';
 
-import AspianHeader from '../../features/layout/header/Header';
-import AspianSider from '../../features/layout/sider/Sider';
-import AspianFooter from '../../features/layout/footer/Footer';
+import AspianHeader from '../../features/aspian-core/layout/header/Header';
+import AspianSider from '../../features/aspian-core/layout/sider/Sider';
+import AspianFooter from '../../features/aspian-core/layout/footer/Footer';
 
 import 'antd/dist/antd.css';
-import '../../scss/pages/dashboard/_common.scss';
-import PostList from '../../features/post/postList/PostList';
+import '../../scss/aspian-core/pages/dashboard/_common.scss';
+import PostList from '../../features/aspian-core/post/postList/PostList';
 
 const { Content } = Layout;
 

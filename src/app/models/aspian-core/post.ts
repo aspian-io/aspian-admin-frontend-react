@@ -14,13 +14,14 @@ export interface IPost {
   postHistories: number;
   comments: number;
   childPosts: number;
-  createdAt: string;
+  createdAt: Date;
   createdBy: User;
   modifiedAt: string;
+  modifiedBy: User;
   userAgent: string;
   userIPAddress: string;
   postAttachments: number;
-  taxonomyPosts: TaxonomyPosts[];
+  taxonomyPosts: TaxonomyPost[];
 }
 
 export enum PostStatusEnum {
@@ -43,6 +44,7 @@ export enum PostTypeEnum {
 interface User {
   id: string;
   displayName: string;
+  userName: string;
   email: string;
   bio: string;
   role: string;
@@ -59,7 +61,7 @@ interface Attachment {
   mimeType: string;
 }
 
-interface TaxonomyPosts {
+interface TaxonomyPost {
     taxonomy: Taxonomy;
 }
 
@@ -69,7 +71,7 @@ interface Taxonomy {
     term: Term;
 }
 
-enum TaxonomyTypeEnum {
+export enum TaxonomyTypeEnum {
   nav_menu,
   category,
   tag,
@@ -77,5 +79,5 @@ enum TaxonomyTypeEnum {
 
 interface Term {
     id: string;
-    Name: string;
+    name: string;
 }

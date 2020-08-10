@@ -10,7 +10,7 @@ import {
   TeamOutlined,
   ControlOutlined
 } from '@ant-design/icons';
-import Logo from '../../../../assets/Logo.svg';
+import Logo from '../../../../../assets/Logo.svg';
 
 const { SubMenu } = Menu;
 

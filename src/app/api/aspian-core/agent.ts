@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
-import { IPost } from '../models/post';
-import { IUser, IUserFormValues } from '../models/user';
+import { IPost } from '../../models/aspian-core/post';
+import { IUser, IUserFormValues } from '../../models/aspian-core/user';
 
 axios.defaults.baseURL = 'http://localhost:5001/api';
 
