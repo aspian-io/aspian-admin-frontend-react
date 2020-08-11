@@ -149,6 +149,7 @@ module.exports = {
     // CleanWebpackPlugin will do some clean up/remove folder before build
     // In this case, this plugin will remove 'dist' and 'build' folder before re-build again
     new CleanWebpackPlugin(),
+
     // PurgecssPlugin will remove unused CSS
     // new PurgecssPlugin({
     //   paths: glob.sync(path.resolve(__dirname, '../build/**/*'), {

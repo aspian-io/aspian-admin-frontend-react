@@ -4,7 +4,9 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   entry: {
-    app: './src/index.tsx',
+    app: [
+      './src/index.tsx',
+    ],
   },
   output: {
     path: path.join(__dirname, '../build'),
@@ -13,13 +15,10 @@ module.exports = {
   mode: 'development',
   devServer: {
     contentBase: path.resolve(__dirname, '../build'),
-    compress: true,
-    hot: true,
-    inline: true,
     port: 3000,
     overlay: true,
   },
-  //devtool: 'cheap-module-eval-source-map',
+  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -139,7 +138,6 @@ module.exports = {
     // CleanWebpackPlugin will do some clean up/remove folder before build
     // In this case, this plugin will remove 'dist' and 'build' folder before re-build again
     new CleanWebpackPlugin(),
-
     // The plugin will generate an HTML5 file for you that includes all your webpack bundles in the body using script tags
     new HtmlWebpackPlugin({
       //inject: false,

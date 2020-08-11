@@ -6,10 +6,10 @@ const { Content } = Layout;
 
 const AspianContent = () => {
     return (
-        <Content className="dashboard__content">
+        <Content className="content">
           <AspianBreadcrumb />
           <div
-            className="dashboard__content-wrapper"
+            className="content-wrapper"
           >
             Bill is a cat.
           </div>

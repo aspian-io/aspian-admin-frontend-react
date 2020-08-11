@@ -12,10 +12,10 @@ const { Header } = Layout;
 const AspianHeader: React.FC<IProps> = ({ collapsed, toggle }) => {
   return (
     <Header
-      className="dashboard__header"
+      className="header"
     >
       {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-        className: 'dashboard__header--trigger',
+        className: 'header--trigger',
         onClick: () => toggle(),
       })}
     </Header>

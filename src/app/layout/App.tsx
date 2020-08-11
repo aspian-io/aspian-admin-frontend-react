@@ -17,36 +17,48 @@ const { Content } = Layout;
 const App: FC<WithTranslation> = ({ t }) => {
   const [collapsed, setCollapsed] = useState<boolean>(false);
 
-
   const toggle = () => {
     setCollapsed(!collapsed);
+    if (collapsed) {
+      document.getElementById('contentLayout')!.style.marginLeft = '200px';
+    } else {
+      document.getElementById('contentLayout')!.style.marginLeft = '0';
+    }
+  };
+
+  const onLayoutBreakpoint = (broken: boolean): void => {
+    if (broken) {
+      document.getElementById('contentLayout')!.style.marginLeft = '0';
+      document.getElementById('appLayout')!.style.overflow = 'hidden';
+      document.getElementById('contentLayout')!.style.minWidth = `100%`;
+      setCollapsed(true);
+    } else {
+      document.getElementById('contentLayout')!.style.marginLeft = '200px';
+      document.getElementById('appLayout')!.style.overflow = 'initial';
+      document.getElementById('contentLayout')!.style.minWidth = `initial`;
+      setCollapsed(false);
+    }
   };
 
   return (
     // <ConfigProvider direction='rtl' locale={faIR}>
     <ConfigProvider>
-      <Layout className="dashboard__layout">
-        <AspianSider collapsed={collapsed} />
-        <Layout className="site-layout">
+      <Layout className="layout" id="appLayout">
+        <AspianSider
+          collapsed={collapsed}
+          onLayoutBreakpoint={onLayoutBreakpoint}
+        />
+        <Layout id="contentLayout">
           <AspianHeader collapsed={collapsed} toggle={toggle} />
-          <Content className="dashboard__content">
-            <Breadcrumb className="dashboard__breadcrumb">
+          <Content
+            className="content"
+            style={{ margin: '24px 16px 0', overflow: 'initial' }}
+          >
+            <Breadcrumb className="breadcrumb">
               <Breadcrumb.Item>User</Breadcrumb.Item>
               <Breadcrumb.Item>Bill</Breadcrumb.Item>
             </Breadcrumb>
-            <div className="dashboard__content-wrapper">
-              {/* <List
-                header={<div>Header</div>}
-                footer={<div>Footer</div>}
-                bordered
-                loading = {postStore.loadingInitial}
-                dataSource={postStore.posts}
-                renderItem={(item) => (
-                  <List.Item>
-                    <Typography.Text mark>[ITEM]</Typography.Text> {item.title}
-                  </List.Item>
-                )}
-              /> */}
+            <div className="content-wrapper">
               <PostList />
             </div>
           </Content>

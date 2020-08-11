@@ -66,7 +66,7 @@ const PostList = () => {
       title: 'Title',
       width: 200,
       dataIndex: 'title',
-      fixed: 'left',
+      fixed: window.innerWidth > 576 ? 'left' : undefined,
       ellipsis: true,
     },
     {
@@ -124,7 +124,7 @@ const PostList = () => {
     },
     {
       title: 'Created At',
-      width: 150,
+      width: 200,
       dataIndex: 'createdAt',
     },
     {
@@ -154,10 +154,11 @@ const PostList = () => {
       dataIndex: 'userIPAddress',
     },
     {
-      title: 'Action',
+      title: 'Actions',
       key: 'operation',
-      fixed: 'right',
+      fixed: window.innerWidth > 576 ? 'right' : undefined,
       width: 150,
+      align: "center",
       render: () => (
         <Space>
           <Tooltip title="Edit Post" color="gray">
@@ -227,7 +228,8 @@ const PostList = () => {
       rowSelection={rowSelection}
       columns={columns}
       dataSource={data}
-      scroll={{ x: 1500, y: 400 }}
+      size="small"
+      scroll={{ x: window.innerWidth-100, y: window.innerHeight-100 }}
     />
   );
 };
