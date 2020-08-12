@@ -21,7 +21,7 @@ export interface IPost {
   userAgent: string;
   userIPAddress: string;
   postAttachments: number;
-  taxonomyPosts: TaxonomyPost[];
+  taxonomyPosts: ITaxonomyPost[];
 }
 
 export enum PostStatusEnum {
@@ -52,23 +52,23 @@ interface User {
 
 interface PostAttachment {
   isMain: boolean;
-  attachment: Attachment;
+  attachment: IAttachment;
 }
 
-interface Attachment {
+interface IAttachment {
   fileName: string;
   fileSize: string;
   mimeType: string;
 }
 
-interface TaxonomyPost {
-    taxonomy: Taxonomy;
+export interface ITaxonomyPost {
+    taxonomy: ITaxonomy;
 }
 
-interface Taxonomy {
+interface ITaxonomy {
     id: string;
     type: TaxonomyTypeEnum;
-    term: Term;
+    term: ITerm;
 }
 
 export enum TaxonomyTypeEnum {
@@ -77,7 +77,7 @@ export enum TaxonomyTypeEnum {
   tag,
 }
 
-interface Term {
+interface ITerm {
     id: string;
     name: string;
 }

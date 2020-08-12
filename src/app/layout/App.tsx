@@ -11,6 +11,8 @@ import AspianFooter from '../../features/aspian-core/layout/footer/Footer';
 import 'antd/dist/antd.css';
 import '../../scss/aspian-core/pages/dashboard/_common.scss';
 import PostList from '../../features/aspian-core/post/postList/PostList';
+import { Route } from 'react-router-dom';
+import Dashboard from '../../features/aspian-core/dashboard/Dashboard';
 
 const { Content } = Layout;
 
@@ -59,7 +61,8 @@ const App: FC<WithTranslation> = ({ t }) => {
               <Breadcrumb.Item>Bill</Breadcrumb.Item>
             </Breadcrumb>
             <div className="content-wrapper">
-              <PostList />
+              <Route exact path='/' component={Dashboard} />
+              <Route exact path='/posts' component={PostList} />
             </div>
           </Content>
           <AspianFooter />

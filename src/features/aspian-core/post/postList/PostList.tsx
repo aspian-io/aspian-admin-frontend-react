@@ -4,7 +4,7 @@ import { ColumnType } from 'antd/lib/table';
 import PostStore from '../../../../app/stores/aspian-core/postStore';
 import { observer } from 'mobx-react-lite';
 import { TableRowSelection } from 'antd/lib/table/interface';
-import { TaxonomyTypeEnum } from '../../../../app/models/aspian-core/post';
+import { TaxonomyTypeEnum, ITaxonomyPost } from '../../../../app/models/aspian-core/post';
 import {
   CheckOutlined,
   CloseOutlined,
@@ -186,13 +186,13 @@ const PostList = () => {
     postStore.loadPosts();
   }, [postStore]);
 
-  postStore.posts.forEach((post, i) => {
+  postStore.postsByDate.forEach((post, i) => {
     data.push({
       key: i,
       title: post.title,
-      postCategory: post.taxonomyPosts.map((postTaxonomy) =>
-        postTaxonomy.taxonomy.type === TaxonomyTypeEnum.category
-          ? `${postTaxonomy.taxonomy.term.name} \n`
+      postCategory: post.taxonomyPosts.map((taxonomyPost: ITaxonomyPost) =>
+        taxonomyPost.taxonomy.type === TaxonomyTypeEnum.category
+          ? `${taxonomyPost.taxonomy.term.name} \n`
           : null
       ),
       postStatus: post.postStatus,
