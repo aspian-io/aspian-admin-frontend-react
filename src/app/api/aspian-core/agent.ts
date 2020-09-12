@@ -1,43 +1,69 @@
-import axios, { AxiosResponse } from 'axios';
-import { IPost } from '../../models/aspian-core/post';
+import axios from 'axios';
+import { IPost, IPostsEnvelope } from '../../models/aspian-core/post';
 import { IUser, IUserFormValues } from '../../models/aspian-core/user';
+import common from '../common';
 
-axios.defaults.baseURL = 'http://localhost:5001/api';
+const {
+  axiosRequestInterceptorHandleSuccess,
+  axiosRequestInterceptorHandleError,
+  axiosResponseInterceptorHandleSuccess,
+  axiosResponseInterceptorHandleError,
+  baseURL,
+  requests,
+} = common;
 
-const responseBody = (response: AxiosResponse) => response.data;
+axios.interceptors.request.use(
+  axiosRequestInterceptorHandleSuccess,
+  axiosRequestInterceptorHandleError
+);
 
-// Just for development mode
-const sleep = (ms: number) => (response: AxiosResponse) =>
-  new Promise<AxiosResponse>((resolve) =>
-    setTimeout(() => resolve(response), ms)
-  );
+axios.interceptors.response.use(
+  axiosResponseInterceptorHandleSuccess,
+  axiosResponseInterceptorHandleError
+);
 
-const requests = {
-  get: (url: string) => axios.get(url).then(sleep(1000)).then(responseBody),
-  post: (url: string, body: {}) =>
-    axios.post(url, body).then(sleep(1000)).then(responseBody),
-  put: (url: string, body: {}) =>
-    axios.put(url, body).then(sleep(1000)).then(responseBody),
-  del: (url: string) => axios.delete(url).then(sleep(1000)).then(responseBody),
+const Attachments = {
+  getFileUrl: (fileName: string): string =>
+    axios.getUri({ url: `${baseURL}/v1/attachments/download/${fileName}` }),
 };
 
 const Posts = {
-  list: (): Promise<IPost[]> => requests.get('/v1/posts'),
-  details: (id: string): Promise<IPost> => requests.get(`/v1/posts/details/${id}`),
+  list: (
+    limit?: number,
+    page?: number,
+    filterKey: string = '',
+    filterValue: string = '',
+    field: string = '',
+    order: string = '',
+    startDate: string = '',
+    endDate: string = '',
+    startNumber: number | '' = '',
+    endNumber: number | '' = ''
+  ): Promise<IPostsEnvelope> =>
+    requests.get(
+      `/v1/posts?limit=${limit}&offset=${
+        page ? page * limit! : 0
+      }&field=${field}&order=${order}&filterKey=${filterKey}&filterValue=${filterValue}&startDate=${startDate}&endDate=${endDate}&startNumber=${startNumber}&endNumber=${endNumber}`
+    ),
+  details: (id: string): Promise<IPost> =>
+    requests.get(`/v1/posts/details/${id}`),
   create: (post: IPost) => requests.post('/v1/posts/create', post),
   update: (post: IPost) => requests.put(`/v1/posts/edit/${post.id}`, post),
-  delete: (id: string) => requests.del(`/posts/delete/${id}`),
+  delete: (ids: string[]) => requests.del(`/v1/posts/delete`, ids),
 };
 
 const User = {
-  current: (): Promise<IUser> => requests.get('v1/user'),
+  current: (): Promise<IUser> => requests.get('/v1/user'),
   login: (user: IUserFormValues): Promise<IUser> =>
-    requests.post('v1/user/login', user),
+    requests.post('/v1/user/login', user),
   register: (user: IUserFormValues): Promise<IUser> =>
-    requests.post('v1/user/register', user),
+    requests.post('/v1/user/register', user),
+  refresh: (): Promise<IUser> => requests.get('/v1/user/refresh-token'),
+  logout: (): Promise<void> => requests.post('/v1/user/logout', {}),
 };
 
 export default {
+  Attachments,
   Posts,
   User,
 };

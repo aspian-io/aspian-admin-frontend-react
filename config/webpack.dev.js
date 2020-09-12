@@ -9,6 +9,7 @@ module.exports = {
     ],
   },
   output: {
+    publicPath: '/',
     path: path.join(__dirname, '../build'),
     filename: '[name].bundle.js',
   },
@@ -17,6 +18,7 @@ module.exports = {
     contentBase: path.resolve(__dirname, '../build'),
     port: 3000,
     overlay: true,
+    historyApiFallback: true,
   },
   devtool: 'source-map',
   module: {
@@ -63,7 +65,6 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        exclude: /node_modules\/(?!antd).*/,
         use: [
           'style-loader', // creates style nodes from JS strings
           'css-loader', // translates CSS into CommonJS
