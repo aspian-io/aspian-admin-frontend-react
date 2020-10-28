@@ -4,9 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   entry: {
-    app: [
-      './src/index.tsx',
-    ],
+    app: ['./src/index.tsx'],
   },
   output: {
     publicPath: '/',
@@ -71,12 +69,12 @@ module.exports = {
           'postcss-loader', // Loader for webpack to process CSS with PostCSS
         ],
       },
+
       {
         test: /\.(png|svg|jpe?g|gif|ico)$/i,
         use: [
           {
             loader: 'file-loader', // This will resolves import/require() on a file into a url and emits the file into the output directory.
-
             options: {
               name: '[name].[ext]',
               outputPath: 'assets/img',

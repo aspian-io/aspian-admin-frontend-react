@@ -24,8 +24,8 @@ import BadRequest from '../../components/aspian-core/layout/result/BadRequest';
 import NotFound from '../../components/aspian-core/layout/result/NotFound';
 import ServerError from '../../components/aspian-core/layout/result/ServerError';
 import NetworkProblem from '../../components/aspian-core/layout/result/NetworkProblem';
-import Unathorized401 from '../../components/aspian-core/layout/result/Unathorized401';
-import Unathorized403 from '../../components/aspian-core/layout/result/Unathorized403';
+import Unauthorized401 from '../../components/aspian-core/layout/result/Unauthorized401';
+import Unauthorized403 from '../../components/aspian-core/layout/result/Unauthorized403';
 
 import { observer } from 'mobx-react-lite';
 import {
@@ -112,8 +112,8 @@ const App = () => {
               render={() => <Redirect to="/admin" />}
             />
           )}
-          <Route exact path="/unathorized401" component={Unathorized401} />
-          <Route exact path="/unathorized403" component={Unathorized403} />
+          <Route exact path="/unauthorized401" component={Unauthorized401} />
+          <Route exact path="/unauthorized403" component={Unauthorized403} />
           <Route
             path={'/(.+)'}
             render={() => (

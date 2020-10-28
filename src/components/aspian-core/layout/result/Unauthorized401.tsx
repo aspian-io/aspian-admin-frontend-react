@@ -3,8 +3,8 @@ import { Result, Button } from 'antd';
 import { history } from '../../../..';
 import { useTranslation } from 'react-i18next';
 
-function Unathorized403() {
-  const { t } = useTranslation('core_unathorized403Page');
+const Unauthorized401 = () => {
+  const { t } = useTranslation('core_unathorized401Page');
 
   return (
     <Result
@@ -12,12 +12,12 @@ function Unathorized403() {
       title={t('title')}
       subTitle={t('subTitle')}
       extra={
-        <Button type="primary" onClick={() => history.push('/admin')}>
+        <Button type="primary" onClick={() => history.push('/login')}>
           {t('btn')}
         </Button>
       }
     />
   );
-}
+};
 
-export default Unathorized403;
+export default Unauthorized401;

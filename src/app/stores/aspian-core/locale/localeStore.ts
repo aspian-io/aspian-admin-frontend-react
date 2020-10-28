@@ -68,5 +68,8 @@ export default class LocaleStore {
         this.dir = DirectionActionTypeEnum.RTL;
       });
     }
+
+    // Reinit tinymce
+    this.coreRootStore.postStore.removeAddNewPostTinyMceInstance();
   };
 }

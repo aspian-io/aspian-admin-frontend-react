@@ -1,4 +1,7 @@
 {
+  "sections": {
+    "main-section": "بخش اصلی"
+  },
   "items": {
     "dashboard": {
       "name": "پیشخوان",

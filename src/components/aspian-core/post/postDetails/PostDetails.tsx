@@ -1,41 +1,36 @@
-import React, { useEffect, FC, useContext, Fragment } from 'react';
+import React, {FC, Fragment, useContext, useEffect} from 'react';
 import {
-  PageHeader,
-  Tabs,
-  Button,
-  Descriptions,
-  Tag,
-  Divider,
-  Card,
-  Popconfirm,
-  Spin,
   Avatar,
+  Button,
+  Card,
+  Descriptions,
+  Divider,
   Empty,
   message,
+  PageHeader,
+  Popconfirm,
+  Spin,
+  Tabs,
+  Tag,
 } from 'antd';
-import {
-  EditFilled,
-  DeleteFilled,
-  CheckOutlined,
-  CloseOutlined,
-} from '@ant-design/icons';
+import {CheckOutlined, CloseOutlined, DeleteFilled, EditFilled,} from '@ant-design/icons';
 import Paragraph from 'antd/lib/typography/Paragraph';
-import { RouteComponentProps } from 'react-router-dom';
-import { LanguageActionTypeEnum } from '../../../../app/stores/aspian-core/locale/types';
-import { observer } from 'mobx-react-lite';
-import { useTranslation } from 'react-i18next';
-import { e2p, ConvertDigitsToCurrentLanguage } from '../../../../utils/aspian-core/base/NumberConverter';
-import { GetRoundedFileSize } from '../../../../utils/aspian-core/base/FileSize';
-import { v4 as uuidv4 } from 'uuid';
-import { UAParser } from 'ua-parser-js';
-import { history } from '../../../..';
+import {RouteComponentProps} from 'react-router-dom';
+import {LanguageActionTypeEnum} from '../../../../app/stores/aspian-core/locale/types';
+import {observer} from 'mobx-react-lite';
+import {useTranslation} from 'react-i18next';
+import {ConvertDigitsToCurrentLanguage, e2p} from '../../../../js-ts/aspian-core/base/NumberConverter';
+import {GetRoundedFileSize} from '../../../../js-ts/aspian-core/base/FileSize';
+import {v4 as uuidv4} from 'uuid';
+import {UAParser} from 'ua-parser-js';
+import {history} from '../../../..';
 import '../../../../scss/aspian-core/pages/posts/post-details/_post-details.scss';
-import { TaxonomyTypeEnum } from '../../../../app/models/aspian-core/post';
 import agent from '../../../../app/api/aspian-core/agent';
-import { CoreRootStoreContext } from '../../../../app/stores/aspian-core/CoreRootStore';
-import GetRandomColor from '../../../../utils/aspian-core/base/GetRandomColor';
+import {CoreRootStoreContext} from '../../../../app/stores/aspian-core/CoreRootStore';
+import GetRandomColor from '../../../../js-ts/aspian-core/base/GetRandomColor';
 import moment from 'moment';
 import jalaliMoment from 'jalali-moment';
+import {TaxonomyTypeEnum} from "../../../../app/models/aspian-core/taxonomy";
 
 const { TabPane } = Tabs;
 

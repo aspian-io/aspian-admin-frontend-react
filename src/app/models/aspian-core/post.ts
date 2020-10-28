@@ -1,3 +1,5 @@
+import {ITaxonomy} from "./taxonomy";
+
 export interface IPostsEnvelope {
   posts: IPost[];
   postCount: number;
@@ -33,6 +35,25 @@ export interface IPost {
   taxonomyPosts: ITaxonomyPost[];
 }
 
+export interface IPostFormValues {
+  id: string;
+  title: string;
+  subtitle: string;
+  excerpt: string;
+  content: string;
+  slug: string;
+  postStatus: PostStatusEnum;
+  scheduledFor: string;
+  commentAllowed: boolean;
+  order: number;
+  type: PostTypeEnum;
+  isPinned: boolean;
+  pinOrder: number;
+  postAttachments: PostAttachment[];
+  parentId: string;
+  taxonomyPosts: ITaxonomyPost[];
+}
+
 export enum PostStatusEnum {
   Publish = 'Publish',
   Future = 'Future',
@@ -48,6 +69,29 @@ export enum PostTypeEnum {
   Posts,
   Products,
   Pages,
+}
+
+export class PostFormValues implements IPostFormValues {
+  id: string = '';
+  title: string = '';
+  subtitle: string = '';
+  excerpt: string = '';
+  content: string = '';
+  slug: string = '';
+  postStatus: PostStatusEnum = PostStatusEnum.Publish;
+  scheduledFor: string = '';
+  commentAllowed: boolean = true;
+  order: number = 0;
+  type: PostTypeEnum = PostTypeEnum.Posts;
+  isPinned: boolean = false;
+  pinOrder: number = 0;
+  postAttachments: PostAttachment[] = [];
+  parentId: string = '';
+  taxonomyPosts: ITaxonomyPost[] = [];
+
+  constructor(init?: IPostFormValues) {
+    Object.assign(this, init);
+  }
 }
 
 export interface User {
@@ -91,21 +135,4 @@ interface IAttachment {
 
 export interface ITaxonomyPost {
   taxonomy: ITaxonomy;
-}
-
-interface ITaxonomy {
-  id: string;
-  type: TaxonomyTypeEnum;
-  term: ITerm;
-}
-
-export enum TaxonomyTypeEnum {
-  nav_menu,
-  category,
-  tag,
-}
-
-interface ITerm {
-  id: string;
-  name: string;
 }

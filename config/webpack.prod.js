@@ -14,7 +14,6 @@ module.exports = {
     filename: '[name].[chunkhash:8].bundle.js',
     chunkFilename: '[name].[chunkhash:8].chunk.js',
   },
-  mode: 'production',
   module: {
     rules: [
       {
@@ -59,7 +58,6 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        exclude: /node_modules\/(?!antd).*/,
         use: [
           'style-loader', // creates style nodes from JS strings
           'css-loader', // translates CSS into CommonJS

@@ -5,11 +5,15 @@ import SiderStore from './layout/siderStore';
 import ResultStore from './layout/resultStore/resultStore';
 import UserStore from './user/userStore';
 import { configure } from 'mobx';
+import AttachmentStore from "./attachment/attachmentStore";
+import TaxonomyStore from "./taxonomy/taxonomyStore";
 
 configure({ enforceActions: 'observed' });
 
 export class CoreRootStore {
     agent: any;
+    attachmentStore: AttachmentStore;
+    taxonomyStore: TaxonomyStore;
     postStore: PostStore;
     localeStore: LocaleStore;
     siderStore: SiderStore;
@@ -17,6 +21,8 @@ export class CoreRootStore {
     userStore: UserStore;
 
     constructor() {
+        this.attachmentStore = new AttachmentStore(this);
+        this.taxonomyStore = new TaxonomyStore(this);
         this.postStore = new PostStore(this);
         this.localeStore = new LocaleStore(this);
         this.siderStore = new SiderStore(this);

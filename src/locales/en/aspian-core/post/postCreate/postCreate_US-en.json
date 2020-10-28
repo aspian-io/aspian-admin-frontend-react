@@ -1,0 +1,87 @@
+{
+  "title": "Add New Post",
+  "description": "You can add new post in this page.",
+  "inputs": {
+    "title": {
+      "placeholder": "Title"
+    },
+    "subtitle": {
+      "placeholder": "Subtitle"
+    }
+  },
+  "button": {
+    "publish": "Publish",
+    "schedule": "Schedule..."
+  },
+  "collapse": {
+    "status-and-visibility": {
+      "title": "Status & Visibility",
+      "content": {
+        "visibility": {
+          "name": "Visibility",
+          "options": {
+            "public": "Public",
+            "private": "Private"
+          }
+        },
+        "publish": {
+          "name": "Publish",
+          "buttons": {
+            "immediately": "Immediately",
+            "schedule": "Schedule"
+          }
+        },
+        "checkboxes": {
+          "pinned-to-top": "Pinned to the top of the blog",
+          "pending": "Pending review"
+        }
+      }
+    },
+    "categories": {
+      "title": "Categories",
+      "content": {
+        "category-tree-select": {
+          "placeholder": "Please select categories..."
+        },
+        "add-new-category": {
+          "name": "Add New Category",
+          "category-name-input": {
+            "placeholder": "New Category Name"
+          },
+          "category-parent-select": {
+            "placeholder": "-- Parent Category --"
+          }
+        }
+      },
+      "button": "Add New Category"
+    },
+    "tags": {
+      "title": "Tags",
+      "button": "New Tag"
+    },
+    "parent-post": {
+      "title": "Parent Post",
+      "content": {
+        "parent-post-select": {
+          "placeholder": "-- Parent Post --"
+        }
+      }
+    },
+    "attachments": {
+      "title": "Media",
+      "button": "Upload"
+    },
+    "excerpt": {
+      "title": "Excerpt",
+      "content": {
+        "description": "Write an excerpt (optional)"
+      }
+    },
+    "discussion": {
+      "title": "Discussion",
+      "checkboxes": {
+        "allow-comments": "Allow Comments"
+      }
+    }
+  }
+}

@@ -1,4 +1,7 @@
 {
+  "sections": {
+    "main-section": "Main Section"
+  },
   "items": {
     "dashboard": {
       "name": "Dashboard",
