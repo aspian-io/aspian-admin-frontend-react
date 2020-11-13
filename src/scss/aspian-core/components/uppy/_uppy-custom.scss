@@ -1,0 +1,13 @@
+
+.uppy-DashboardContent-bar {
+  height: 60px;
+}
+.uppy-DashboardContent-title {
+  line-height: 60px;
+}
+.uppy-StatusBar {
+  height: 60px;
+}
+.uppy-Root:not(.uppy-size--md) .uppy-StatusBar-additionalInfo {
+  display: block;
+}

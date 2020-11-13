@@ -1,4 +1,5 @@
 import {ITaxonomy} from "./taxonomy";
+import {AttachmentTypeEnum} from "./attachment";
 
 export interface IPostsEnvelope {
   posts: IPost[];
@@ -109,15 +110,6 @@ interface PostAttachment {
   attachment: IAttachment;
 }
 
-export enum AttachmentTypeEnum {
-  Photo,
-  Video,
-  Audio,
-  PDF,
-  TextFile,
-  Compressed,
-  Other,
-}
 export enum UploadLocationEnum {
   LocalHost,
   FtpServer,

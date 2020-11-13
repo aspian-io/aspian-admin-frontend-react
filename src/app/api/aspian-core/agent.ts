@@ -2,7 +2,7 @@ import axios from 'axios';
 import {IPost, IPostsEnvelope} from '../../models/aspian-core/post';
 import {IUser, IUserFormValues} from '../../models/aspian-core/user';
 import common from '../common';
-import {IAttachment} from "../../models/aspian-core/attachment";
+import {IAttachment, IFileBrowser} from "../../models/aspian-core/attachment";
 import {ITaxonomy, TaxonomyTypeEnum} from "../../models/aspian-core/taxonomy";
 import {ITreeData} from "../../../components/aspian-core/post/postCreate/Categories";
 
@@ -26,6 +26,7 @@ axios.interceptors.response.use(
 );
 
 const Attachments = {
+    fileBrowser: (): Promise<IFileBrowser[]> => requests.get("/v1/attachments/filebrowser"),
     getFileUrl: (fileName: string): string =>
         axios.getUri({url: `${baseURL}/v1/attachments/download/${fileName}`}),
     uploadFile: (file: Blob): Promise<IAttachment> => requests.postForm(`/v1/attachments`, file),
@@ -77,6 +78,8 @@ const Posts = {
                 endNumber
             }`
         ),
+
+    antDPostsTreeSelect: (): Promise<ITreeData[]> => requests.get("/v1/posts/antd-parent-post-treeselect"),
 
     details: (id: string): Promise<IPost> =>
         requests.get(`/v1/posts/details/${id}`),

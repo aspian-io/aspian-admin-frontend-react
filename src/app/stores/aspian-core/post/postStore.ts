@@ -10,6 +10,7 @@ import {EventValue} from "rc-picker/lib/interface";
 import {Moment} from "moment";
 import {DayRange} from "react-modern-calendar-datepicker";
 import {UploadChangeParam, UploadFile} from "antd/es/upload/interface";
+import {ITreeData} from "../../../../components/aspian-core/post/postCreate/Categories";
 
 export default class PostStore {
     coreRootStore: CoreRootStore;
@@ -22,6 +23,8 @@ export default class PostStore {
     @observable post: IPost | undefined = undefined;
     @observable loadingInitial = true;
     @observable submitting = false;
+    @observable postsTreeSelectLoading = false;
+    @observable postsTreeSelectRegistry = new Map<string, ITreeData>();
     @observable postCount: number = 0;
     @observable maxAttachmentsNumber: number = 0;
     @observable maxViewCount: number = 0;
@@ -95,6 +98,22 @@ export default class PostStore {
             });
         }
     };
+
+    @action loadAntdTreeSelectCompatiblePosts = async () => {
+        this.postsTreeSelectLoading = true;
+        try {
+            const posts = await agent.Posts.antDPostsTreeSelect();
+            runInAction("loadAntdTreeSelectCompatiblePosts - removing loading and setting postsTreeSelectRegistry", () => {
+                posts.map((p) => this.postsTreeSelectRegistry.set(p.key, p));
+                this.postsTreeSelectLoading = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction("loadAntdTreeSelectCompatiblePosts error - remove loading", () => {
+                this.postsTreeSelectLoading = false;
+            })
+        }
+    }
 
     @action deletePosts = async (ids: string[]) => {
         try {
