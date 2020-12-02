@@ -1,11 +1,13 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, {FC, Fragment, useState} from "react";
 import {Alert, Button, Col, Form, Input, message, Row, Spin, TreeSelect} from "antd";
 import {useTranslation} from "react-i18next";
-import {CoreRootStoreContext} from "../../../../app/stores/aspian-core/CoreRootStore";
-import {observer} from "mobx-react-lite";
 import {Taxonomy, TaxonomyTypeEnum, Term} from "../../../../app/models/aspian-core/taxonomy";
 import slugify from "slugify";
 import {v4} from "uuid";
+import {ITaxonomyStateType} from "../../../../app/store/aspian-core/reducers/taxonomy/taxonomyReducerTypes";
+import {connect} from "react-redux";
+import {IStoreState} from "../../../../app/store/rootReducerTypes";
+import {createCategory, loadAntdTreeSelectCompatibleCategories} from "../../../../app/store/aspian-core/actions";
 
 export interface ITreeData {
     title: string;
@@ -14,14 +16,18 @@ export interface ITreeData {
     children: ITreeData[];
 }
 
-const Categories = () => {
+interface ICategoryProps {
+    taxonomy: ITaxonomyStateType;
+    createCategory: Function;
+    loadAntdTreeSelectCompatibleCategories: Function;
+}
+
+const Categories: FC<ICategoryProps> = ({taxonomy, createCategory, loadAntdTreeSelectCompatibleCategories}) => {
     const {t} = useTranslation('core_postCreate');
-    const coreRootStore = useContext(CoreRootStoreContext);
-    const {loadingInitial, catTreeSelectRegistry, loadAntdTreeSelectCompatibleCategories, catTreeSelectLoading, createCategory} = coreRootStore.taxonomyStore;
+    const {loadingInitial, catsTreeSelect, catTreeSelectLoading} = taxonomy;
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
     const [isAddNewCategoryBtnDisabled, setIsAddNewCategoryBtnDisabled] = useState(true);
-    const [categoriesArray, setCategoriesArray] = useState<ITreeData[]>([]);
-    const [newCatParentTreeSelectVal, setNewCatParentTreeSelectVal] = useState<TreeSelect<string> | undefined>(undefined);
+    const [newCatParentTreeSelectVal, setNewCatParentTreeSelectVal] = useState<any>(undefined);
 
     // Parent Category Tree Select clear handler
     const clearSelectedNewCatParentTreeSelect = () => {
@@ -31,16 +37,8 @@ const Categories = () => {
     // States
     const [showAddCategoryForm, setShowAddCategoryForm] = useState(false);
 
-    ///
-    useEffect(() => {
-        if (catTreeSelectRegistry.size === 0) {
-            loadAntdTreeSelectCompatibleCategories()
-                .then(() => setCategoriesArray(Array.from(catTreeSelectRegistry.values())));
-        }
-    }, [catTreeSelectRegistry, catTreeSelectRegistry.size, loadAntdTreeSelectCompatibleCategories])
-
     //
-    let addNewCategoryParentTreeSelect:  TreeSelect<TreeSelect<string>> | null;
+    //let addNewCategoryParentTreeSelect: TreeSelect<TreeSelect<string>> | null;
 
     //
     const [addNewCatForm] = Form.useForm();
@@ -54,7 +52,7 @@ const Categories = () => {
                         loading={catTreeSelectLoading}
                         style={{width: '100%'}}
                         dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
-                        treeData={categoriesArray}
+                        treeData={catsTreeSelect}
                         placeholder={t("collapse.categories.content.category-tree-select.placeholder")}
                         treeCheckable={true}
                         showArrow={true}
@@ -62,6 +60,11 @@ const Categories = () => {
                         filterTreeNode={true}
                         treeNodeFilterProp="title"
                         treeCheckStrictly={true}
+                        onDropdownVisibleChange={(open) => {
+                            if (open && catsTreeSelect.length === 0) {
+                                loadAntdTreeSelectCompatibleCategories()
+                            }
+                        }}
                         onChange={(value, node) => console.log("Tree Select OnSelect value: ", value)}
                     />
                 </Col>
@@ -99,9 +102,9 @@ const Categories = () => {
                                     clearSelectedNewCatParentTreeSelect();
                                     setIsAddNewCategoryBtnDisabled(true)
                                     message.success('New category added successfully.');
-                                    setCategoriesArray(Array.from(catTreeSelectRegistry.values()));
+                                    //setCategoriesArray(Array.from(catTreeSelectRegistry.values()));
                                 })
-                                .catch((error) => {
+                                .catch((error: any) => {
                                     if (error.data.errors.TermName || error.data.errors.TermSlug) {
                                         setErrorMsg("Category name is already exist. Please change it and try again.");
                                     } else {
@@ -126,23 +129,27 @@ const Categories = () => {
                                        className="add-new__add-new-cat--input"/>
                             </Form.Item>
                             <Form.Item>
-                                <Input type="hidden" id="newCategoryParentId"/>
+                                <Input type="hidden" id="newCategoryParentId" value={newCatParentTreeSelectVal}/>
                                 <TreeSelect
                                     value={newCatParentTreeSelectVal}
                                     loading={catTreeSelectLoading}
                                     style={{width: '100%'}}
                                     dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
-                                    treeData={categoriesArray}
+                                    treeData={catsTreeSelect}
                                     placeholder={t("collapse.categories.content.add-new-category.category-parent-select.placeholder")}
                                     showSearch={true}
                                     allowClear
                                     filterTreeNode={true}
                                     treeNodeFilterProp="title"
                                     multiple={false}
-                                    onChange={(value: TreeSelect<string>) => {
-                                        (document.getElementById("newCategoryParentId") as HTMLInputElement).value = value?.toString();
-                                        setNewCatParentTreeSelectVal(value);
+                                    onDropdownVisibleChange={(open) => {
+                                        if (open && catsTreeSelect.length === 0) {
+                                            loadAntdTreeSelectCompatibleCategories()
                                         }
+                                    }}
+                                    onChange={(value) => {
+                                        setNewCatParentTreeSelectVal(value);
+                                    }
                                     }
                                 />
                             </Form.Item>
@@ -160,4 +167,15 @@ const Categories = () => {
     );
 }
 
-export default observer(Categories);
+// Redux State To Map
+const mapStateToProps = ({taxonomy}: IStoreState): { taxonomy: ITaxonomyStateType } => {
+    return {taxonomy};
+}
+
+// Redux Dispatch To Map
+const mapDispatchToProps = {
+    createCategory,
+    loadAntdTreeSelectCompatibleCategories
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Categories);

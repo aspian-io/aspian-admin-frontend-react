@@ -1,10 +1,16 @@
-import React, {Fragment} from 'react';
+import React, {FC, Fragment, useContext} from 'react';
 import {Checkbox, Col, Row, Select} from "antd";
 import {CheckboxChangeEvent} from "antd/es/checkbox";
 import SchedulePopover from "./SchedulePopover";
 import {useTranslation} from "react-i18next";
+import {connect} from "react-redux";
+import {setPostVisibility} from "../../../../app/store/aspian-core/actions";
 
-const StatusAndVisibility = () => {
+interface IStatusAndVisibilityProps {
+    setPostVisibility: typeof setPostVisibility;
+}
+
+const StatusAndVisibility: FC<IStatusAndVisibilityProps> = ({setPostVisibility}) => {
 
     const { t } = useTranslation('core_postCreate');
 
@@ -18,6 +24,11 @@ const StatusAndVisibility = () => {
         console.log(`checked = ${e.target.checked}`);
     }
 
+    // Visibility Select onChange
+    const visibilitySelectOnChange = (value: string) => {
+        setPostVisibility(value);
+    }
+
     ///
     return (
         <Fragment>
@@ -28,7 +39,9 @@ const StatusAndVisibility = () => {
                 <Col>
                     <Select showArrow={false} defaultValue="public" dropdownMatchSelectWidth={100}
                             style={{color: "#1890ff"}}
-                            bordered={false}>
+                            bordered={false}
+                            onChange={visibilitySelectOnChange}
+                    >
                         <Select.Option value="public">{t("collapse.status-and-visibility.content.visibility.options.public")}</Select.Option>
                         <Select.Option value="private">{t("collapse.status-and-visibility.content.visibility.options.private")}</Select.Option>
                     </Select>
@@ -54,6 +67,11 @@ const StatusAndVisibility = () => {
             </Row>
         </Fragment>
     );
+};
+
+// Redux Dispatch To Map
+const mapDispatchToProps = {
+    setPostVisibility
 }
 
-export default StatusAndVisibility;
+export default connect(null, mapDispatchToProps)(StatusAndVisibility);

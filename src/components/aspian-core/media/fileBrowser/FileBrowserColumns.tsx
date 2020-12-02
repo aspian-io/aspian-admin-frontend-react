@@ -1,19 +1,18 @@
-import React, {useContext, useState} from "react";
-import {Button, Input, Space, Switch} from "antd";
-import {ColumnType} from "antd/es/table/interface";
-import {CheckOutlined, CloseOutlined, SearchOutlined} from "@ant-design/icons";
+import React, {useState} from "react";
+import {Button, Input, Space, Tooltip} from "antd";
+import {EyeOutlined, PlusOutlined, SearchOutlined} from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import {ColumnsType} from "antd/lib/table/interface";
 import {FileBrowserColumnDataIndexEnum, IFileBrowserAntdTable} from "./types";
-import {CoreRootStoreContext} from "../../../../app/stores/aspian-core/CoreRootStore";
+import agent from "../../../../app/api/aspian-core/agent";
+import {
+    ISetChosenFileKeyAction, IOnOkFileBrowserModalAction
+} from "../../../../app/store/aspian-core/actions";
+import {ColumnType} from "antd/es/table";
 
-const FileBrowserColumns = () => {
-    // Stores
-    const coreRootStore = useContext(CoreRootStoreContext);
-    const {
-        fileBrowserAddFileKey, addedFileKeysFromFileBrowser,
-        removeAddedFileKeyFromArray, clearAllAddedFileKeysFromFileBrowser
-    } = coreRootStore.attachmentStore;
+const FileBrowserColumns = (setChosenFileKey: (key: string) => ISetChosenFileKeyAction,
+                            onOkFileBrowserModal: () => IOnOkFileBrowserModalAction) => {
+
     const [searchText, setSearchText] = useState<React.ReactText>('');
     const [searchedColumn, setSearchedColumn] = useState<string | number | React.ReactText[] | undefined>('');
 
@@ -103,20 +102,31 @@ const FileBrowserColumns = () => {
             dataIndex: FileBrowserColumnDataIndexEnum.ACTIONS,
             align: 'center',
             render: (text, record, index) => (
-                <Switch
-                    checked={addedFileKeysFromFileBrowser.includes(record.key)}
-                    checkedChildren={<CheckOutlined/>}
-                    unCheckedChildren={<CloseOutlined/>}
-                    size="small"
-                    onClick={(checked) => {
-                        if (checked) {
-                            fileBrowserAddFileKey(record.key);
-                        } else {
-                            removeAddedFileKeyFromArray(record.key);
-                        }
-                    }}
-
-                />
+                <Space direction="horizontal">
+                    <Tooltip title="View" placement="top">
+                        <Button
+                            shape="circle"
+                            size="small"
+                            icon={<EyeOutlined/>}
+                            // onClick={() => {
+                            //
+                            // }}
+                        />
+                    </Tooltip>
+                    <Tooltip title="Insert" placement="top">
+                        <Button
+                            className="insertFileToMce"
+                            type="primary"
+                            shape="circle"
+                            size="small"
+                            icon={<PlusOutlined/>}
+                            onClick={() => {
+                                setChosenFileKey(agent.Attachments.getFilePrependUrl() + record.fileName);
+                                onOkFileBrowserModal();
+                            }}
+                        />
+                    </Tooltip>
+                </Space>
             )
         }
     ];

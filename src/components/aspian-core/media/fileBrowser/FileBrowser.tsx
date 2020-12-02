@@ -1,47 +1,86 @@
-import React, {Fragment, useContext, useEffect} from "react";
-import {message, Table} from 'antd';
-import FileBrowserDataSource from "./FileBrowserDataSource";
+import React, {FC, Fragment, useEffect} from "react";
+import {Table} from 'antd';
 import {IFileBrowserAntdTable} from "./types";
-import {CoreRootStoreContext} from "../../../../app/stores/aspian-core/CoreRootStore";
-import {observer} from "mobx-react-lite";
 import FileBrowserColumns from "./FileBrowserColumns";
-import Text from "antd/es/typography/Text";
+import FileBrowserDataSource from "./FileBrowserDataSource";
+import {IStoreState} from "../../../../app/store/rootReducerTypes";
+import {connect} from "react-redux";
+import {IAttachmentStateType} from "../../../../app/store/aspian-core/reducers/attachment/attachmentReducerTypes";
+import {fileBrowser, onOkFileBrowserModal, setChosenFileKey} from "../../../../app/store/aspian-core/actions";
+import {AttachmentTypeEnum} from "../../../../app/models/aspian-core/attachment";
 
-const FileBrowser = () => {
-    // Stores
-    const coreRootStore = useContext(CoreRootStoreContext);
+interface IFileBrowserProps {
+    attachment: IAttachmentStateType;
+    setChosenFileKey: typeof setChosenFileKey;
+    onOkFileBrowserModal: typeof onOkFileBrowserModal;
+    fileBrowser: Function;
+}
+
+const FileBrowser: FC<IFileBrowserProps> = ({attachment, setChosenFileKey, onOkFileBrowserModal, fileBrowser}) => {
     const {
-        fileBrowserLoading, fileBrowser, fileBrowserRegistry, addedFileKeysFromFileBrowser
-    } = coreRootStore.attachmentStore;
+        fileBrowserLoading,
+        fileBrowserDataSource,
+        photoFileBrowserDataSource,
+        videoFileBrowserDataSource,
+        miscellaneousFileBrowserDataSource,
+        isFileBrowserActive,
+        isMiscellaneousFileBrowserActive,
+        isPhotoFileBrowserActive,
+        isVideoFileBrowserActive
+    } = attachment;
 
-    //
-    useEffect(() => {
-        if (fileBrowserRegistry.size === 0)
-            fileBrowser().catch(() => message.error('Error loading File Browser!'));
-    }, [fileBrowserRegistry.size, fileBrowser]);
-
+    ///
+    // useEffect(() => {
+    //     if (isFileBrowserActive && fileBrowserDataSource.length === 0) {
+    //         fileBrowser();
+    //     }
+    //     if (isPhotoFileBrowserActive && photoFileBrowserDataSource.length === 0) {
+    //         fileBrowser(AttachmentTypeEnum.Photo);
+    //     }
+    //     if (isVideoFileBrowserActive && videoFileBrowserDataSource.length === 0) {
+    //         fileBrowser(AttachmentTypeEnum.Video);
+    //     }
+    //     if (isMiscellaneousFileBrowserActive && miscellaneousFileBrowserDataSource.length === 0) {
+    //         fileBrowser(AttachmentTypeEnum.Other);
+    //     }
+    // }, [isFileBrowserActive, isPhotoFileBrowserActive,
+    //     isVideoFileBrowserActive, isMiscellaneousFileBrowserActive,
+    //     fileBrowserDataSource.length, photoFileBrowserDataSource.length,
+    //     videoFileBrowserDataSource.length, miscellaneousFileBrowserDataSource.length, fileBrowser])
 
     return (
         <Fragment>
             <Table<IFileBrowserAntdTable> loading={fileBrowserLoading}
                                           size="small"
-                                          columns={FileBrowserColumns()}
-                                          dataSource={FileBrowserDataSource()}
+                                          columns={FileBrowserColumns(setChosenFileKey, onOkFileBrowserModal)}
+                                          dataSource={FileBrowserDataSource(
+                                              fileBrowserDataSource,
+                                              photoFileBrowserDataSource,
+                                              videoFileBrowserDataSource,
+                                              miscellaneousFileBrowserDataSource,
+                                              isFileBrowserActive,
+                                              isMiscellaneousFileBrowserActive,
+                                              isPhotoFileBrowserActive,
+                                              isVideoFileBrowserActive
+                                          )}
+                                          rowClassName="fileBrowser__table-row"
                                           pagination={{pageSize: 1000, hideOnSinglePage: true}}
                                           scroll={{y: 500}}
             />
-            {addedFileKeysFromFileBrowser.length > 0 &&
-            <Fragment>
-                <br/>
-                <Text className="text primary-color" style={{fontSize: "12px"}}>
-                    {addedFileKeysFromFileBrowser.length > 1 ?
-                        `${addedFileKeysFromFileBrowser.length} files added` :
-                        `${addedFileKeysFromFileBrowser.length} file added`}
-                </Text>
-            </Fragment>
-            }
         </Fragment>
     );
 }
 
-export default observer(FileBrowser);
+// Redux State To Map
+const mapStateToProps = ({attachment}: IStoreState): { attachment: IAttachmentStateType } => {
+    return {attachment}
+}
+
+// Redux Dispatch To Map
+const mapDispatchToProps = {
+    setChosenFileKey,
+    onOkFileBrowserModal,
+    fileBrowser
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FileBrowser);

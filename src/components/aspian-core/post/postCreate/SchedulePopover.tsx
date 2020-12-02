@@ -1,22 +1,23 @@
-import React, {MouseEvent, useContext, useEffect, useState} from "react";
+import React, {FC, MouseEvent, useContext, useEffect, useState} from "react";
 import {Button, DatePicker, Input, Popover, Space, TimePicker} from "antd";
 import {CalendarOutlined} from '@ant-design/icons';
 import moment, {Moment} from "moment";
 import jalaliMoment from "jalali-moment";
-import {CoreRootStoreContext} from "../../../../app/stores/aspian-core/CoreRootStore";
-import {LanguageActionTypeEnum} from "../../../../app/stores/aspian-core/locale/types";
 import PersianDatePicker, {DayValue, utils} from "react-modern-calendar-datepicker";
-import {observer} from "mobx-react-lite";
 import {useTranslation} from "react-i18next";
 import {e2p} from "../../../../js-ts/aspian-core/base/NumberConverter";
+import {LanguageActionTypeEnum, setPublishBtnTxt} from "../../../../app/store/aspian-core/actions";
+import {IStoreState} from "../../../../app/store/rootReducerTypes";
+import {connect} from "react-redux";
 
-const SchedulePopover = () => {
+interface ISchedulePopoverProps {
+    lang: LanguageActionTypeEnum;
+    setPublishBtnTxt: typeof setPublishBtnTxt;
+}
+
+const SchedulePopover: FC<ISchedulePopoverProps> = ({lang, setPublishBtnTxt}) => {
 
     const { t } = useTranslation('core_postCreate');
-    // store
-    const coreRootStore = useContext(CoreRootStoreContext);
-    const {setPublishBtnTxt} = coreRootStore.postStore;
-    const {lang} = coreRootStore.localeStore;
     // states
     const [schedulePopoverIsVisible, setSchedulePopoverIsVisible] = useState(false);
     const [publishScheduledBtnTxt, setPublishScheduledBtnTxt] = useState(() => t("collapse.status-and-visibility.content.publish.buttons.immediately"));
@@ -143,4 +144,14 @@ const SchedulePopover = () => {
     );
 }
 
-export default observer(SchedulePopover);
+// Redux State To Map
+const mapStateToProps = ({locale}: IStoreState): {lang: LanguageActionTypeEnum} => {
+    return {lang: locale.lang}
+}
+
+// Redux Dispatch To Map
+const mapDispatchToProps = {
+    setPublishBtnTxt
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SchedulePopover);

@@ -11,19 +11,37 @@ import {
     FilterOutlined,
     SearchOutlined
 } from "@ant-design/icons";
-import {LanguageActionTypeEnum} from "../../../../app/stores/aspian-core/locale/types";
-import React, {Fragment, ReactText, useContext} from "react";
+import React, {Fragment, ReactText} from "react";
 import {ColumnType} from "antd/es/table/interface";
-import PersianDatePicker from "react-modern-calendar-datepicker";
+import PersianDatePicker, {DayRange} from "react-modern-calendar-datepicker";
 import jalaliMoment from "jalali-moment";
-import {RangeValue} from "rc-picker/lib/interface";
+import {EventValue, RangeValue} from "rc-picker/lib/interface";
 import {Moment} from "moment";
 import Highlighter from "react-highlight-words";
 import {useTranslation} from "react-i18next";
-import {CoreRootStoreContext} from "../../../../app/stores/aspian-core/CoreRootStore";
 import {ColumnDataIndexEnum, IPostAntdTable} from "./types";
+import {IPostStateType} from "../../../../app/store/aspian-core/reducers/post/postReducerTypes";
+import {
+    IPostSetTargetBtnAction,
+    ISetDateRangeAction,
+    ISetPostListSelectedDayRangeAction,
+    ISetSearchedColumnAction,
+    ISetSearchTextAction,
+    ISetSelectedRowKeysAction,
+    LanguageActionTypeEnum
+} from "../../../../app/store/aspian-core/actions";
 
-const PostListColumns = (): ColumnsType<IPostAntdTable> => {
+const PostListColumns = (lang: LanguageActionTypeEnum,
+                         post: IPostStateType,
+                         loadPosts: Function,
+                         deletePosts: Function,
+                         setDateRange: (dateRange: [EventValue<Moment>, EventValue<Moment>]) => ISetDateRangeAction,
+                         setSearchText: (searchText: ReactText) => ISetSearchTextAction,
+                         setSearchedColumn: (searchedColumn: string | number | ReactText[] | undefined) => ISetSearchedColumnAction,
+                         setSelectedDayRange: (selectedDayRange: DayRange) => ISetPostListSelectedDayRangeAction,
+                         setSelectedRowKeys: (selectedRowKeys: ReactText[]) => ISetSelectedRowKeysAction,
+                         setTargetBtn: (targetBtn: string) => IPostSetTargetBtnAction
+): ColumnsType<IPostAntdTable> => {
     const {RangePicker} = DatePicker;
 
     const {t} = useTranslation('core_postList');
@@ -32,19 +50,14 @@ const PostListColumns = (): ColumnsType<IPostAntdTable> => {
     const DEFAULT_PAGE_SIZE = 10;
 
     // Stores
-    const coreRootStore = useContext(CoreRootStoreContext);
-    const {lang} = coreRootStore.localeStore;
     const {
-        loadingInitial, loadPosts, deletePosts, maxViewCount,
+        loadingInitial, maxViewCount,
         maxAttachmentsNumber, maxComments, maxChildPosts,
         postListWindowWidth, currentPage,
-        dateRange, setDateRange,
-        searchText, setSearchText,
-        searchedColumn, setSearchedColumn,
-        selectedDayRange, setSelectedDayRange,
-        selectedRowKeys, setSelectedRowKeys,
-        targetBtn, setTargetBtn
-    } = coreRootStore.postStore;
+        dateRange, searchText, searchedColumn,
+        selectedDayRange, selectedRowKeys,
+        targetBtn
+    } = post;
 
 
     // Custom slider filter functionality implementation

@@ -1,4 +1,5 @@
 import React, {FC, useContext} from 'react';
+import {toggle} from "../../../../../app/store/aspian-core/actions";
 import {Menu} from 'antd';
 import Logo from '../../../../../assets/Logo.svg';
 import {
@@ -14,15 +15,15 @@ import {
 } from '@ant-design/icons';
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
-import {observer} from 'mobx-react-lite';
-import {CoreRootStoreContext} from '../../../../../app/stores/aspian-core/CoreRootStore';
+import {connect} from "react-redux";
+
+interface IMenuProps {
+    toggle: typeof toggle;
+}
 
 const {SubMenu} = Menu;
-const AspianMenu: FC<RouteComponentProps> = ({location}) => {
+const AspianMenu: FC<RouteComponentProps & IMenuProps> = ({location, toggle}) => {
     const {t} = useTranslation(['core_menu', 'core_common']);
-    // Stores
-    const coreRootStore = useContext(CoreRootStoreContext);
-    const {siderStore} = coreRootStore;
 
     return (
         <Menu
@@ -30,7 +31,7 @@ const AspianMenu: FC<RouteComponentProps> = ({location}) => {
             mode="inline"
             selectedKeys={[location.pathname]}
             onSelect={({item, key, keyPath, selectedKeys, domEvent}) =>
-                siderStore.toggle(false)
+                toggle(false)
             }
         >
             <Menu.Item className="sider__menu-logo" disabled>
@@ -134,4 +135,11 @@ const AspianMenu: FC<RouteComponentProps> = ({location}) => {
     );
 };
 
-export default withRouter(observer(AspianMenu));
+// Redux Dispatch To Map
+const mapDispatchToProps = {
+    toggle
+}
+
+export default withRouter(connect(
+    null, mapDispatchToProps
+)(AspianMenu));

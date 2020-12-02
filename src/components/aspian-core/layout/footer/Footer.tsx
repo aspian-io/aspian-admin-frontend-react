@@ -4,10 +4,7 @@ import { HeartFilled } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { e2p } from '../../../../js-ts/aspian-core/base/NumberConverter';
 import moment from 'jalali-moment';
-import {
-  LocaleVariableEnum,
-  LanguageActionTypeEnum,
-} from '../../../../app/stores/aspian-core/locale/types';
+import {LanguageActionTypeEnum, LocaleVariableEnum} from "../../../../app/store/aspian-core/actions";
 
 const { Footer } = Layout;
 const AspianFooter = () => {

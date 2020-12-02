@@ -128,6 +128,12 @@ const requests = {
         return axios.post(url, formData, {
             headers: {"Content-type": "multipart/form-data"}
         }).then(responseBody)
+    },
+    getStream: (url: string) => {
+        return axios.get(url, {
+            responseType: "stream",
+           // adapter: httpAdapter
+        })
     }
 };
 

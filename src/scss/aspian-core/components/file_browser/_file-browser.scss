@@ -1,0 +1,9 @@
+.fileBrowser {
+  &__table {
+    &-row {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}

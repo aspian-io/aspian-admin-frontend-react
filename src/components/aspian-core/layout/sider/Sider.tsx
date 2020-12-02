@@ -1,30 +1,50 @@
-import React, { useContext } from 'react';
-import { Layout } from 'antd';
+import React, {FC} from 'react';
+import {Layout} from 'antd';
 import AspianMenu from './menu/Menu';
-import { observer } from 'mobx-react-lite';
-import { LanguageActionTypeEnum } from '../../../../app/stores/aspian-core/locale/types';
-import { CoreRootStoreContext } from '../../../../app/stores/aspian-core/CoreRootStore';
+import {connect} from "react-redux";
+import {LanguageActionTypeEnum, onLayoutBreakpoint} from "../../../../app/store/aspian-core/actions";
+import {IStoreState} from "../../../../app/store/rootReducerTypes";
+import {ISiderStateType} from "../../../../app/store/aspian-core/reducers/layout/sider/siderReducerTypes";
+import {ILocaleStateType} from "../../../../app/store/aspian-core/reducers/locale/localeReducerTypes";
 
-const { Sider } = Layout;
+const {Sider} = Layout;
 
-const AspianSider = () => {
-  // Stores
-  const coreRootStore = useContext(CoreRootStoreContext);
-  const {siderStore, localeStore} = coreRootStore;
+interface ISiderProps {
+    sider: ISiderStateType;
+    locale: ILocaleStateType;
+    onLayoutBreakpoint: typeof onLayoutBreakpoint;
+}
 
-  return (
-    <Sider
-      className='sider'
-      breakpoint="lg"
-      collapsedWidth= "0"
-      trigger={null}
-      collapsible
-      collapsed={siderStore.collapsed}
-      onBreakpoint= {(broken) => siderStore.onLayoutBreakpoint(broken, localeStore.lang === LanguageActionTypeEnum.en ? false : true)}
-    >
-      <AspianMenu />
-    </Sider>
-  );
+const AspianSider: FC<ISiderProps> = ({sider, locale, onLayoutBreakpoint}) => {
+    const {collapsed} = sider;
+    const {lang} = locale;
+
+    return (
+        <Sider
+            className='sider'
+            breakpoint="lg"
+            collapsedWidth="0"
+            trigger={null}
+            collapsible
+            collapsed={collapsed}
+            onBreakpoint={(broken) => onLayoutBreakpoint(broken, lang !== LanguageActionTypeEnum.en)}
+        >
+            <AspianMenu/>
+        </Sider>
+    );
 };
 
-export default observer(AspianSider);
+// Redux State To Map
+const mapStateToProps = ({sider, locale}: IStoreState): { sider: ISiderStateType, locale: ILocaleStateType } => {
+    return {
+        sider,
+        locale
+    }
+}
+
+// Redux Dispatch To Map
+const mapDispatchToProps = {
+    onLayoutBreakpoint
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AspianSider);

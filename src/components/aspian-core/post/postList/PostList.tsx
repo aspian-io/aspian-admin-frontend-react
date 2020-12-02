@@ -1,4 +1,4 @@
-import React, {Fragment, MouseEvent, ReactText, useContext, useEffect,} from 'react';
+import React, {FC, Fragment, MouseEvent, ReactText, useEffect,} from 'react';
 import {Button, Col, message, Popconfirm, Row, Table, Typography,} from 'antd';
 import {TableRowSelection} from 'antd/lib/table/interface';
 import {DeleteFilled,} from '@ant-design/icons';
@@ -7,18 +7,57 @@ import {useTranslation} from 'react-i18next';
 import Title from 'antd/lib/typography/Title';
 import Paragraph from 'antd/lib/typography/Paragraph';
 import Text from 'antd/lib/typography/Text';
-import {DirectionActionTypeEnum, LanguageActionTypeEnum,} from '../../../../app/stores/aspian-core/locale/types';
 import {SorterResult} from 'antd/es/table/interface';
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import '../../../../scss/aspian-core/components/modern-calendar/_persian-datepicker.scss';
 import {e2p} from '../../../../js-ts/aspian-core/base/NumberConverter';
-import {observer} from 'mobx-react-lite';
-import {CoreRootStoreContext} from '../../../../app/stores/aspian-core/CoreRootStore';
 import PostListColumns from "./PostListColumns";
 import PostListDataSource from "./PostListDataSource";
 import {ColumnDataIndexEnum, IPostAntdTable} from "./types";
+import {connect} from "react-redux";
+import {IStoreState} from "../../../../app/store/rootReducerTypes";
+import {IPostStateType} from "../../../../app/store/aspian-core/reducers/post/postReducerTypes";
+import {ILocaleStateType} from "../../../../app/store/aspian-core/reducers/locale/localeReducerTypes";
+import {
+    deletePosts,
+    DirectionActionTypeEnum,
+    LanguageActionTypeEnum,
+    loadPosts,
+    setCurrentPage,
+    setDateRange,
+    setDeleteRangeBtn,
+    setPostListWindowWidth,
+    setSearchedColumn,
+    setSearchText,
+    setSelectedDayRange,
+    setSelectedRowKeys,
+    setTargetBtn
+} from "../../../../app/store/aspian-core/actions";
 
-const PostList = () => {
+interface IPostListProps {
+    post: IPostStateType;
+    locale: ILocaleStateType;
+    loadPosts: Function;
+    deletePosts: Function;
+    setDateRange: typeof setDateRange;
+    setSearchText: typeof setSearchText;
+    setSearchedColumn: typeof setSearchedColumn;
+    setSelectedDayRange: typeof setSelectedDayRange;
+    setSelectedRowKeys: typeof setSelectedRowKeys;
+    setTargetBtn: typeof setTargetBtn;
+
+    setCurrentPage: typeof setCurrentPage;
+    setDeleteRangeBtn: typeof setDeleteRangeBtn;
+    setPostListWindowWidth: typeof setPostListWindowWidth;
+}
+
+const PostList: FC<IPostListProps> = ({
+                                          post, locale,
+                                          loadPosts, deletePosts, setDateRange,
+                                          setSearchText, setSearchedColumn, setSelectedDayRange,
+                                          setSelectedRowKeys, setTargetBtn, setCurrentPage,
+                                          setDeleteRangeBtn, setPostListWindowWidth
+                                      }) => {
     const {t} = useTranslation('core_postList');
     // Constants
     /// Default page size
@@ -48,18 +87,12 @@ const PostList = () => {
         ColumnDataIndexEnum.CHILD_POSTS,
     ];
 
-    // Stores
-    const coreRootStore = useContext(CoreRootStoreContext);
-    const {dir, lang} = coreRootStore.localeStore;
+    const {dir, lang} = locale;
     const {
-        loadingInitial, loadPosts, deletePosts,
-        submitting, postRegistry, postCount,
-        currentPage, setCurrentPage,
-        selectedRowKeys, setSelectedRowKeys,
-        deleteRangeBtn, setDeleteRangeBtn,
-        targetBtn, setTargetBtn,
-        setPostListWindowWidth
-    } = coreRootStore.postStore;
+        loadingInitial, submitting, posts,
+        postCount, currentPage, selectedRowKeys,
+        deleteRangeBtn, targetBtn
+    } = post;
 
     // On select a row event
     const onSelectChange = (selectedRowKeys: ReactText[]) => {
@@ -109,7 +142,7 @@ const PostList = () => {
 
 
     useEffect(() => {
-        if (Array.from(postRegistry.values()).length === 0) {
+        if (posts.length === 0) {
             loadPosts(DEFAULT_PAGE_SIZE, 0);
         }
 
@@ -120,7 +153,7 @@ const PostList = () => {
         if (selectedRowKeys.length === 0) {
             setDeleteRangeBtn(true);
         }
-    }, [selectedRowKeys.length, postRegistry, loadPosts, setDeleteRangeBtn, setPostListWindowWidth]);
+    }, [selectedRowKeys.length, posts, loadPosts, setDeleteRangeBtn, setPostListWindowWidth]);
 
 
     const confirm = async (e: MouseEvent | undefined) => {
@@ -186,8 +219,12 @@ const PostList = () => {
                     loading={loadingInitial}
                     bordered
                     rowSelection={rowSelection}
-                    columns={PostListColumns()}
-                    dataSource={PostListDataSource()}
+                    columns={PostListColumns(
+                        lang, post, loadPosts, deletePosts, setDateRange,
+                        setSearchText, setSearchedColumn, setSelectedDayRange,
+                        setSelectedRowKeys, setTargetBtn
+                    )}
+                    dataSource={PostListDataSource(lang, posts)}
                     size="small"
                     scroll={{x: window.innerWidth - 100, y: window.innerHeight - 100}}
                     pagination={{
@@ -258,4 +295,18 @@ const PostList = () => {
     );
 };
 
-export default observer(PostList);
+// Redux State To Map
+const mapStateToProps = ({post, locale}: IStoreState): { post: IPostStateType, locale: ILocaleStateType } => {
+    return {post, locale}
+}
+
+// Redux Dispatch To Map
+const mapDispatchToProps = {
+    loadPosts, deletePosts, setDateRange,
+    setSearchText, setSearchedColumn,
+    setSelectedDayRange, setSelectedRowKeys,
+    setTargetBtn, setCurrentPage, setDeleteRangeBtn,
+    setPostListWindowWidth
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostList);

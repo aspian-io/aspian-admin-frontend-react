@@ -1,23 +1,19 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {FC} from "react";
 import {TreeSelect} from "antd";
 import {useTranslation} from "react-i18next";
-import {CoreRootStoreContext} from "../../../../app/stores/aspian-core/CoreRootStore";
+import {IStoreState} from "../../../../app/store/rootReducerTypes";
 import {ITreeData} from "./Categories";
+import {connect} from "react-redux";
+import {loadAntdTreeSelectCompatiblePosts} from "../../../../app/store/aspian-core/actions";
 
-const ParentPost = () => {
+interface IParentPostProps {
+    postsTreeSelectLoading: boolean;
+    postsTreeSelect: ITreeData[];
+    loadAntdTreeSelectCompatiblePosts: Function;
+}
+
+const ParentPost: FC<IParentPostProps> = ({postsTreeSelectLoading, postsTreeSelect, loadAntdTreeSelectCompatiblePosts}) => {
     const {t} = useTranslation('core_postCreate');
-    const coreRootStore = useContext(CoreRootStoreContext);
-    const {postsTreeSelectLoading, postsTreeSelectRegistry, loadAntdTreeSelectCompatiblePosts} = coreRootStore.postStore;
-
-    const [postsArray, setPostsArray] = useState<ITreeData[]>([]);
-
-    ///
-    useEffect(() => {
-        if (postsTreeSelectRegistry.size === 0) {
-            loadAntdTreeSelectCompatiblePosts()
-                .then(() => setPostsArray(Array.from(postsTreeSelectRegistry.values())));
-        }
-    }, [loadAntdTreeSelectCompatiblePosts, postsTreeSelectRegistry])
 
     ///
     return (
@@ -25,13 +21,28 @@ const ParentPost = () => {
             loading={postsTreeSelectLoading}
             style={{width: '100%'}}
             dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
-            treeData={postsArray}
+            treeData={postsTreeSelect}
             placeholder={t("collapse.parent-post.content.parent-post-select.placeholder")}
             showSearch={true}
             filterTreeNode={true}
             treeNodeFilterProp="title"
+            onDropdownVisibleChange={(open) => {
+                if (open && postsTreeSelect.length === 0) {
+                    loadAntdTreeSelectCompatiblePosts()
+                }
+            }}
         />
     );
 }
 
-export default ParentPost;
+// Redux State To Map
+const mapStateToProps = ({post}: IStoreState): { postsTreeSelectLoading: boolean, postsTreeSelect: ITreeData[] } => {
+    return {postsTreeSelectLoading: post.postsTreeSelectLoading, postsTreeSelect: post.postsTreeSelect}
+}
+
+// Redux Dispatch To Map
+const mapDispatchToProps = {
+    loadAntdTreeSelectCompatiblePosts
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ParentPost);

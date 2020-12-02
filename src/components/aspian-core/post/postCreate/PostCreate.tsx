@@ -1,8 +1,5 @@
-import React, {Fragment, useContext, useEffect, useState} from 'react';
-import {observer} from 'mobx-react-lite';
+import React, {FC, Fragment, useState} from 'react';
 import {Button, Checkbox, Col, Collapse, Form, Input, Row, Space, Typography} from 'antd';
-import FullTextEditorInit from '../../../../js-ts/aspian-core/vendors/tinymce5/FullEditor';
-import {CoreRootStoreContext} from "../../../../app/stores/aspian-core/CoreRootStore";
 import {CheckboxChangeEvent} from "antd/es/checkbox";
 import '../../../../scss/aspian-core/pages/posts/add-new/_add-new.scss';
 import StatusAndVisibility from "./StatusAndVisibility";
@@ -11,13 +8,19 @@ import Tags from "./Tags";
 import Attachments from "./Attachments";
 import {useTranslation} from "react-i18next";
 import ParentPost from "./ParentPost";
+import FileBrowserModal from "../../media/fileBrowser/FileBrowserModal";
+import {connect} from "react-redux";
+import {IStoreState} from "../../../../app/store/rootReducerTypes";
+import TextEditor from "./TextEditor";
 
-const PostCreate = () => {
+interface IPostCreateProps {
+    publishBtnTxt: string;
+    postEditorContent: string;
+}
+
+const PostCreate: FC<IPostCreateProps> = ({publishBtnTxt, postEditorContent}) => {
     const {t} = useTranslation('core_postCreate');
 
-    const coreRootStore = useContext(CoreRootStoreContext);
-    const {lang, dir} = coreRootStore.localeStore;
-    const {postEditorContent, cleanupAddNewPost, publishBtnTxt} = coreRootStore.postStore;
     const {Title, Paragraph, Text} = Typography;
     const {TextArea} = Input;
     const {Panel} = Collapse;
@@ -30,19 +33,6 @@ const PostCreate = () => {
     window.addEventListener('resize', (event: UIEvent) => {
         setWindowWidth(window.innerWidth);
     });
-
-    ///
-    useEffect(() => {
-        document.querySelector("#addPostEditor")!.addEventListener("change", (e) => {
-            requiredInputsOnChange();
-        })
-        // Initialize the app
-        FullTextEditorInit('addPostEditor', editorDefaultHeight, dir, lang, postEditorContent);
-        return () => {
-            cleanupAddNewPost();
-        }
-    }, [dir, lang, postEditorContent, cleanupAddNewPost]);
-
 
     // Collapse callback to save opened panel keys to localstorage
     const collapseCallback = (key: any) => {
@@ -59,17 +49,16 @@ const PostCreate = () => {
         document.getElementById("postContentHiddenSubmit")?.click();
     }
 
-    // postTitle and postSubtitle input values
-    let postTitle: string = '';
-    let postSubtitle: string = '';
+
     // Enable/Disable Publish button after checking required inputs having values
     const requiredInputsOnChange = () => {
-        const postContent = document.getElementById("addPostEditor");
+        const postTitle = document.getElementById("postTitle") as HTMLInputElement;
+        const postSubtitle = document.getElementById("postSubtitle") as HTMLInputElement;
         const publishBtn = document.getElementById("publishPostBtn");
 
-        const isTitleEmpty = postTitle.length === 0;
-        const isSubtitleEmpty = postSubtitle.length === 0;
-        const isContentEmpty = postContent?.innerHTML.trim().length === 0;
+        const isTitleEmpty = postTitle.value.length === 0;
+        const isSubtitleEmpty = postSubtitle.value.length === 0;
+        const isContentEmpty = postEditorContent.length === 0;
 
         //
         if (!isTitleEmpty && !isSubtitleEmpty && !isContentEmpty) {
@@ -82,6 +71,7 @@ const PostCreate = () => {
     ///
     return (
         <Fragment>
+
             <Form id="addNewPostForm" name="addNewPostForm">
                 <input type="hidden" name="title"/>
                 <input type="hidden" name="subTitle"/>
@@ -118,7 +108,6 @@ const PostCreate = () => {
                                                placeholder={t("inputs.title.placeholder")}
                                                size="large"
                                                onChange={(e) => {
-                                                   postTitle = e.target?.value.trim();
                                                    requiredInputsOnChange();
                                                }
                                                }
@@ -138,7 +127,6 @@ const PostCreate = () => {
                                                placeholder={t("inputs.subtitle.placeholder")}
                                                size="large"
                                                onChange={(e) => {
-                                                   postSubtitle = e.target.value.trim();
                                                    requiredInputsOnChange();
                                                }
                                                }
@@ -152,9 +140,9 @@ const PostCreate = () => {
                                         rules={[{required: true, message: 'Post content cannot be empty!'}]}
                                         style={{margin: "0"}}
                                     >
-                                        <TextArea
-                                            id="addPostEditor"
-                                        />
+                                        <TextEditor requiredInputsOnChange={requiredInputsOnChange}
+                                                    editorDefaultHeight={editorDefaultHeight}/>
+                                        <FileBrowserModal/>
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -200,4 +188,9 @@ const PostCreate = () => {
     );
 };
 
-export default observer(PostCreate);
+// Redux State To Map
+const mapStateToProps = ({post}: IStoreState): { publishBtnTxt: string, postEditorContent: string } => {
+    return {publishBtnTxt: post.publishBtnTxt, postEditorContent: post.postEditorContent}
+}
+
+export default connect(mapStateToProps)(PostCreate);

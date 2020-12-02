@@ -2,7 +2,12 @@ import axios from 'axios';
 import {IPost, IPostsEnvelope} from '../../models/aspian-core/post';
 import {IUser, IUserFormValues} from '../../models/aspian-core/user';
 import common from '../common';
-import {IAttachment, IFileBrowser} from "../../models/aspian-core/attachment";
+import {
+    AttachmentTypeEnum,
+    IAttachment,
+    IAttachmentUploadSettings,
+    IFileBrowser
+} from "../../models/aspian-core/attachment";
 import {ITaxonomy, TaxonomyTypeEnum} from "../../models/aspian-core/taxonomy";
 import {ITreeData} from "../../../components/aspian-core/post/postCreate/Categories";
 
@@ -26,11 +31,14 @@ axios.interceptors.response.use(
 );
 
 const Attachments = {
-    fileBrowser: (): Promise<IFileBrowser[]> => requests.get("/v1/attachments/filebrowser"),
+    fileBrowser: (type: AttachmentTypeEnum | "" = ""): Promise<IFileBrowser[]> => requests.get(`/v1/attachments/filebrowser?type=${type}`),
+    fileBrowserFileDetails: (fileName: string): Promise<IFileBrowser> => requests.get(`/v1/attachments/filebrowser-filedetails/${fileName}`),
     getFileUrl: (fileName: string): string =>
         axios.getUri({url: `${baseURL}/v1/attachments/download/${fileName}`}),
+    getFilePrependUrl: (): string => `${baseURL}/v1/attachments/download/`,
     uploadFile: (file: Blob): Promise<IAttachment> => requests.postForm(`/v1/attachments`, file),
     deleteTusFile: (id: string) => requests.del(`/v1/attachments/deletetusfile/${id}`),
+    uploadSettings: (): Promise<IAttachmentUploadSettings> => requests.get("/v1/attachments/upload-settings")
 };
 
 const Taxonomies = {

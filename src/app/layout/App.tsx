@@ -1,12 +1,22 @@
-import React, { Fragment, useEffect, useContext } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import React, {FC, Fragment, useEffect} from 'react';
+import {Redirect, Route, Switch} from 'react-router-dom';
+
+import {connect} from "react-redux";
+import {
+    DirectionActionTypeEnum,
+    getCurrentUser,
+    LanguageActionTypeEnum,
+    onLayoutBreakpoint,
+    setAppLoaded
+} from "../store/aspian-core/actions";
+import {IStoreState} from "../store/rootReducerTypes";
 
 import i18n from '../../locales/i18n';
 import enUS from 'antd/es/locale/en_US';
 import faIR from 'antd/es/locale/fa_IR';
 import '../../scss/aspian-core/base/_font-fa.scss';
 
-import { Layout, ConfigProvider, Spin } from 'antd';
+import {ConfigProvider, Layout, Spin} from 'antd';
 import 'antd/dist/antd.css';
 
 import Dashboard from '../../components/aspian-core/dashboard/Dashboard';
@@ -27,139 +37,149 @@ import NetworkProblem from '../../components/aspian-core/layout/result/NetworkPr
 import Unauthorized401 from '../../components/aspian-core/layout/result/Unauthorized401';
 import Unauthorized403 from '../../components/aspian-core/layout/result/Unauthorized403';
 
-import { observer } from 'mobx-react-lite';
-import {
-  DirectionActionTypeEnum,
-  LanguageActionTypeEnum,
-} from '../stores/aspian-core/locale/types';
-import { CoreRootStoreContext } from '../stores/aspian-core/CoreRootStore';
+import {ILocaleStateType} from "../store/aspian-core/reducers/locale/localeReducerTypes";
+import {IUserStateType} from "../store/aspian-core/reducers/user/userReducerTypes";
 
-const App = () => {
-  // Stores
-  const coreRootStore = useContext(CoreRootStoreContext);
-  const { siderStore, localeStore } = coreRootStore;
-  const {
-    user,
-    getCurrentUser,
-    setAppLoaded,
-    isAppLoaded,
-    isLoggedIn,
-  } = coreRootStore.userStore;
+interface IAppProps {
+    onLayoutBreakpoint: typeof onLayoutBreakpoint;
+    locale: ILocaleStateType;
+    userState: IUserStateType;
+    getCurrentUser: Function;
+    setAppLoaded: Function;
+}
 
-  const { Content } = Layout;
+const App: FC<IAppProps> = ({locale, onLayoutBreakpoint, userState, getCurrentUser, setAppLoaded}) => {
+    const {lang, dir} = locale;
+    const {isAppLoaded, user} = userState;
+    const {Content} = Layout;
 
-  useEffect(() => {
-    if (user === null) {
-      getCurrentUser().then(() => setAppLoaded());
-    } else {
-      setAppLoaded();
+
+    useEffect(() => {
+        if (user === null) {
+            getCurrentUser().then(() => setAppLoaded());
+        } else {
+            setAppLoaded();
+        }
+        if (window.innerWidth >= 992)
+            onLayoutBreakpoint(
+                false,
+                dir !== DirectionActionTypeEnum.LTR
+            );
+        i18n.changeLanguage(lang);
+    }, [
+        dir,
+        lang,
+        getCurrentUser,
+        user,
+        setAppLoaded,
+        onLayoutBreakpoint
+    ]);
+
+    if (lang === LanguageActionTypeEnum.fa) {
+        document.body.style.fontFamily = 'Vazir';
     }
-    if (window.innerWidth >= 992)
-      siderStore.onLayoutBreakpoint(
-        false,
-        localeStore.dir === DirectionActionTypeEnum.LTR ? false : true
-      );
-    i18n.changeLanguage(localeStore.lang);
-  }, [
-    siderStore,
-    siderStore.onLayoutBreakpoint,
-    localeStore.dir,
-    localeStore.lang,
-    getCurrentUser,
-    user,
-    setAppLoaded,
-  ]);
 
-  if (localeStore.lang === LanguageActionTypeEnum.fa) {
-    document.body.style.fontFamily = 'Vazir';
-  }
+    if (!isAppLoaded) {
+        return (
+            <div className="spinner-wrapper">
+                <Spin wrapperClassName="spinner-wrapper"/>
+            </div>
+        );
+    }
 
-  if (!isAppLoaded) {
     return (
-      <div className="spinner-wrapper">
-        <Spin wrapperClassName="spinner-wrapper" />
-      </div>
-    );
-  }
-
-  return (
-    <ConfigProvider
-      direction={
-        localeStore.dir === DirectionActionTypeEnum.LTR ? 'ltr' : 'rtl'
-      }
-      locale={localeStore.lang === LanguageActionTypeEnum.en ? enUS : faIR}
-    >
-      <Layout className="aspian__layout" id="appLayout">
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={() =>
-              isLoggedIn && user ? (
-                <Redirect to="/admin" />
-              ) : (
-                <Redirect to="/login" />
-              )
+        <ConfigProvider
+            direction={
+                dir === DirectionActionTypeEnum.LTR ? 'ltr' : 'rtl'
             }
-          />
-          {!isLoggedIn && !user && (
-            <Route exact path="/login" component={Login} />
-          )}
-          {isLoggedIn && user && (
-            <Route
-              exact
-              path="/login"
-              render={() => <Redirect to="/admin" />}
-            />
-          )}
-          <Route exact path="/unauthorized401" component={Unauthorized401} />
-          <Route exact path="/unauthorized403" component={Unauthorized403} />
-          <Route
-            path={'/(.+)'}
-            render={() => (
-              <Fragment>
-                <AspianSider />
-                <Layout className="aspian__layout--content" id="contentLayout">
-                  <AspianHeader />
-                  <Content className="content">
-                    <AspianBreadcrumb />
-                    <div className="content-wrapper">
-                      <Switch>
-                        <Route exact path="/admin" component={Dashboard} />
-                        <Route exact path="/register" component={Register} />
-                        <Route exact path="/admin/posts" component={PostList} />
+            locale={lang === LanguageActionTypeEnum.en ? enUS : faIR}
+        >
+            <Layout className="aspian__layout" id="appLayout">
+                <Switch>
+                    <Route
+                        exact
+                        path="/"
+                        render={() =>
+                            !!user ? (
+                                <Redirect to="/admin"/>
+                            ) : (
+                                <Redirect to="/login"/>
+                            )
+                        }
+                    />
+                    {!user && (
+                        <Route exact path="/login" component={Login}/>
+                    )}
+                    {!!user && (
                         <Route
-                          exact
-                          path="/admin/posts/details/:id"
-                          component={PostDetails}
+                            exact
+                            path="/login"
+                            render={() => <Redirect to="/admin"/>}
                         />
-                        <Route
-                          path="/admin/posts/add-new"
-                          component={PostCreate}
-                        />
-                        <Route path="/badrequest" component={BadRequest} />
-                        <Route path="/notfound" component={NotFound} />
-                        <Route path="/server-error" component={ServerError} />
-                        <Route
-                          path="/network-error"
-                          component={NetworkProblem}
-                        />
-                        <Route
-                          path={['/admin/post-deletion-result']}
-                          component={ResultPage}
-                        />
-                      </Switch>
-                    </div>
-                  </Content>
-                  <AspianFooter />
-                </Layout>
-              </Fragment>
-            )}
-          />
-        </Switch>
-      </Layout>
-    </ConfigProvider>
-  );
+                    )}
+                    <Route exact path="/unauthorized401" component={Unauthorized401}/>
+                    <Route exact path="/unauthorized403" component={Unauthorized403}/>
+                    <Route
+                        path={'/(.+)'}
+                        render={() => (
+                            <Fragment>
+                                <AspianSider/>
+                                <Layout className="aspian__layout--content" id="contentLayout">
+                                    <AspianHeader/>
+                                    <Content className="content">
+                                        <AspianBreadcrumb/>
+                                        <div className="content-wrapper">
+                                            <Switch>
+                                                <Route exact path="/admin" component={Dashboard}/>
+                                                <Route exact path="/register" component={Register}/>
+                                                <Route exact path="/admin/posts" component={PostList}/>
+                                                <Route
+                                                    exact
+                                                    path="/admin/posts/details/:id"
+                                                    component={PostDetails}
+                                                />
+                                                <Route
+                                                    path="/admin/posts/add-new"
+                                                    component={PostCreate}
+                                                />
+                                                <Route path="/badrequest" component={BadRequest}/>
+                                                <Route path="/notfound" component={NotFound}/>
+                                                <Route path="/server-error" component={ServerError}/>
+                                                <Route
+                                                    path="/network-error"
+                                                    component={NetworkProblem}
+                                                />
+                                                <Route
+                                                    path={['/admin/post-deletion-result']}
+                                                    component={ResultPage}
+                                                />
+                                            </Switch>
+                                        </div>
+                                    </Content>
+                                    <AspianFooter/>
+                                </Layout>
+                            </Fragment>
+                        )}
+                    />
+                </Switch>
+            </Layout>
+        </ConfigProvider>
+    );
 };
 
-export default observer(App);
+// Redux State To Map
+const mapStateToProps = ({locale, userState}: IStoreState): { locale: ILocaleStateType, userState: IUserStateType } => {
+    return {locale, userState}
+}
+
+// Redux Dispatch To Map
+const mapDispatchToProps = {
+    onLayoutBreakpoint,
+    setAppLoaded,
+    getCurrentUser
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(App);

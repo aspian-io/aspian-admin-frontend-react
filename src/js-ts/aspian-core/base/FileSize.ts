@@ -1,4 +1,4 @@
-import { LanguageActionTypeEnum } from '../../../app/stores/aspian-core/locale/types';
+import { LanguageActionTypeEnum } from '../../../app/store/aspian-core/actions';
 import { e2p } from './NumberConverter';
 
 /**

@@ -1,26 +1,21 @@
 import React, {useContext} from 'react';
 import {UAParser} from "ua-parser-js";
-import {ITaxonomyPost, PostStatusEnum} from "../../../../app/models/aspian-core/post";
+import {IPost, ITaxonomyPost, PostStatusEnum} from "../../../../app/models/aspian-core/post";
 import {Link} from "react-router-dom";
 import {ConvertDigitsToCurrentLanguage, e2p} from "../../../../js-ts/aspian-core/base/NumberConverter";
-import {LanguageActionTypeEnum} from "../../../../app/stores/aspian-core/locale/types";
 import {CheckOutlined, CloseOutlined} from "@ant-design/icons";
 import jalaliMoment from "jalali-moment";
 import moment from "moment";
-import {CoreRootStoreContext} from "../../../../app/stores/aspian-core/CoreRootStore";
 import {useTranslation} from "react-i18next";
 import {IPostAntdTable} from "./types";
 import {TaxonomyTypeEnum} from "../../../../app/models/aspian-core/taxonomy";
+import {LanguageActionTypeEnum} from "../../../../app/store/aspian-core/actions";
 
-const PostListDataSource = (): IPostAntdTable[] => {
+const PostListDataSource = (lang: LanguageActionTypeEnum, posts: IPost[]): IPostAntdTable[] => {
     const {t} = useTranslation('core_postList');
-    // Stores
-    const coreRootStore = useContext(CoreRootStoreContext);
-    const {lang} = coreRootStore.localeStore;
-    const {postRegistry} = coreRootStore.postStore;
 
     let data: IPostAntdTable[] = [];
-    postRegistry.forEach((post, i) => {
+    posts.forEach((post, i) => {
         const ua = new UAParser();
         ua.setUA(post.userAgent);
 
@@ -61,7 +56,7 @@ const PostListDataSource = (): IPostAntdTable[] => {
         }
         // Initializing columns data
         data.push({
-            key: i,
+            key: post.id,
             title: (
                 <Link to={`/admin/posts/details/${i}`}>
                     {ConvertDigitsToCurrentLanguage(
