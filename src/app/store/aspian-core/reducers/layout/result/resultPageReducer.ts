@@ -19,7 +19,7 @@ const initialState: IResultPageStateType = {
 export const resultPageReducer = (state = initialState, action: ResultPageAction) => {
     switch (action.type) {
         case ResultPageActionTypes.RESULT_PAGE_INIT:
-            return action.payload;
+            return {...state, ...action.payload};
         default:
             return state;
     }

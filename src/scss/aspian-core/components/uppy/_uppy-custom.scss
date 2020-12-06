@@ -4,10 +4,20 @@
 }
 .uppy-DashboardContent-title {
   line-height: 60px;
+  max-width: 100px;
 }
 .uppy-StatusBar {
   height: 60px;
 }
 .uppy-Root:not(.uppy-size--md) .uppy-StatusBar-additionalInfo {
   display: block;
+}
+
+.uppy-Root,
+.uppy-Dashboard-AddFiles-title {
+  font-size: 12px;
+}
+
+.uppy-Dashboard-Item {
+  padding: 10px;
 }

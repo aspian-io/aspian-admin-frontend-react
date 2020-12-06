@@ -1,4 +1,4 @@
-import React, {FC, Fragment, useEffect} from "react";
+import React, {FC, Fragment} from "react";
 import {Table} from 'antd';
 import {IFileBrowserAntdTable} from "./types";
 import FileBrowserColumns from "./FileBrowserColumns";
@@ -6,17 +6,29 @@ import FileBrowserDataSource from "./FileBrowserDataSource";
 import {IStoreState} from "../../../../app/store/rootReducerTypes";
 import {connect} from "react-redux";
 import {IAttachmentStateType} from "../../../../app/store/aspian-core/reducers/attachment/attachmentReducerTypes";
-import {fileBrowser, onOkFileBrowserModal, setChosenFileKey} from "../../../../app/store/aspian-core/actions";
-import {AttachmentTypeEnum} from "../../../../app/models/aspian-core/attachment";
+import {
+    DirectionActionTypeEnum,
+    fileBrowser,
+    onOkFileBrowserModal,
+    setChosenFileKey,
+    setLastSelectedVideoFileMimeType
+} from "../../../../app/store/aspian-core/actions";
+import "../../../../scss/aspian-core/components/file_browser/_file-browser.scss";
 
 interface IFileBrowserProps {
     attachment: IAttachmentStateType;
     setChosenFileKey: typeof setChosenFileKey;
     onOkFileBrowserModal: typeof onOkFileBrowserModal;
     fileBrowser: Function;
+    dir: DirectionActionTypeEnum;
+    setLastSelectedVideoFileMimeType: typeof setLastSelectedVideoFileMimeType;
 }
 
-const FileBrowser: FC<IFileBrowserProps> = ({attachment, setChosenFileKey, onOkFileBrowserModal, fileBrowser}) => {
+const FileBrowser: FC<IFileBrowserProps> = ({
+                                                attachment, setChosenFileKey,
+                                                onOkFileBrowserModal, fileBrowser, dir,
+                                                setLastSelectedVideoFileMimeType
+                                            }) => {
     const {
         fileBrowserLoading,
         fileBrowserDataSource,
@@ -29,30 +41,14 @@ const FileBrowser: FC<IFileBrowserProps> = ({attachment, setChosenFileKey, onOkF
         isVideoFileBrowserActive
     } = attachment;
 
-    ///
-    // useEffect(() => {
-    //     if (isFileBrowserActive && fileBrowserDataSource.length === 0) {
-    //         fileBrowser();
-    //     }
-    //     if (isPhotoFileBrowserActive && photoFileBrowserDataSource.length === 0) {
-    //         fileBrowser(AttachmentTypeEnum.Photo);
-    //     }
-    //     if (isVideoFileBrowserActive && videoFileBrowserDataSource.length === 0) {
-    //         fileBrowser(AttachmentTypeEnum.Video);
-    //     }
-    //     if (isMiscellaneousFileBrowserActive && miscellaneousFileBrowserDataSource.length === 0) {
-    //         fileBrowser(AttachmentTypeEnum.Other);
-    //     }
-    // }, [isFileBrowserActive, isPhotoFileBrowserActive,
-    //     isVideoFileBrowserActive, isMiscellaneousFileBrowserActive,
-    //     fileBrowserDataSource.length, photoFileBrowserDataSource.length,
-    //     videoFileBrowserDataSource.length, miscellaneousFileBrowserDataSource.length, fileBrowser])
-
     return (
         <Fragment>
             <Table<IFileBrowserAntdTable> loading={fileBrowserLoading}
                                           size="small"
-                                          columns={FileBrowserColumns(setChosenFileKey, onOkFileBrowserModal)}
+                                          columns={FileBrowserColumns(
+                                              setChosenFileKey,
+                                              onOkFileBrowserModal,
+                                              dir, setLastSelectedVideoFileMimeType)}
                                           dataSource={FileBrowserDataSource(
                                               fileBrowserDataSource,
                                               photoFileBrowserDataSource,
@@ -72,15 +68,23 @@ const FileBrowser: FC<IFileBrowserProps> = ({attachment, setChosenFileKey, onOkF
 }
 
 // Redux State To Map
-const mapStateToProps = ({attachment}: IStoreState): { attachment: IAttachmentStateType } => {
-    return {attachment}
+const mapStateToProps = ({attachment, locale}: IStoreState):
+    {
+        attachment: IAttachmentStateType,
+        dir: DirectionActionTypeEnum
+    } => {
+    return {
+        attachment,
+        dir: locale.dir
+    }
 }
 
 // Redux Dispatch To Map
 const mapDispatchToProps = {
     setChosenFileKey,
     onOkFileBrowserModal,
-    fileBrowser
+    fileBrowser,
+    setLastSelectedVideoFileMimeType
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FileBrowser);

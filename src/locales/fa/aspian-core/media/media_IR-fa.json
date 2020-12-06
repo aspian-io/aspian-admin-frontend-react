@@ -1,0 +1,15 @@
+{
+  "file-browser": {
+    "title": "مرورگر فایل",
+    "type": "نوع",
+    "file-name": "نام فایل",
+    "action": "عملیات",
+    "search": "جستجو",
+    "reset": "نمایش همه",
+    "search-input-placeholder": "جستجو نام فایل...",
+    "tooltip": {
+      "insert": "درج",
+      "view": "مشاهده"
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {Fragment, useState} from "react";
 import {Button, Input, Space, Tooltip} from "antd";
 import {EyeOutlined, PlusOutlined, SearchOutlined} from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
@@ -6,12 +6,22 @@ import {ColumnsType} from "antd/lib/table/interface";
 import {FileBrowserColumnDataIndexEnum, IFileBrowserAntdTable} from "./types";
 import agent from "../../../../app/api/aspian-core/agent";
 import {
-    ISetChosenFileKeyAction, IOnOkFileBrowserModalAction
+    DirectionActionTypeEnum,
+    IOnOkFileBrowserModalAction,
+    ISetChosenFileKeyAction,
+    ISetLastSelectedVideoMimeTypeAction,
+    setIsFilePreviewModalVisible
 } from "../../../../app/store/aspian-core/actions";
 import {ColumnType} from "antd/es/table";
+import {useTranslation} from "react-i18next";
+import store from "../../../../app/store/store";
 
 const FileBrowserColumns = (setChosenFileKey: (key: string) => ISetChosenFileKeyAction,
-                            onOkFileBrowserModal: () => IOnOkFileBrowserModalAction) => {
+                            onOkFileBrowserModal: () => IOnOkFileBrowserModalAction,
+                            dir: DirectionActionTypeEnum,
+                            setLastSelectedVideoFileMimeType: (lastSelectedVideoMimeType: string) => ISetLastSelectedVideoMimeTypeAction) => {
+
+    const {t} = useTranslation('core_media');
 
     const [searchText, setSearchText] = useState<React.ReactText>('');
     const [searchedColumn, setSearchedColumn] = useState<string | number | React.ReactText[] | undefined>('');
@@ -25,7 +35,7 @@ const FileBrowserColumns = (setChosenFileKey: (key: string) => ISetChosenFileKey
                     ref={node => {
                         searchInput = node!;
                     }}
-                    placeholder={`Search ${dataIndex}`}
+                    placeholder={`${t('file-browser.search-input-placeholder')}`}
                     value={selectedKeys[0]}
                     onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
                     onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
@@ -39,10 +49,10 @@ const FileBrowserColumns = (setChosenFileKey: (key: string) => ISetChosenFileKey
                         size="small"
                         style={{width: 90}}
                     >
-                        Search
+                        {t("file-browser.search")}
                     </Button>
                     <Button onClick={() => handleReset(clearFilters)} size="small" style={{width: 90}}>
-                        Reset
+                        {t("file-browser.reset")}
                     </Button>
                 </Space>
             </div>
@@ -57,6 +67,7 @@ const FileBrowserColumns = (setChosenFileKey: (key: string) => ISetChosenFileKey
                 setTimeout(() => searchInput.select(), 100);
             }
         },
+
         render: (text: React.ReactText) =>
             searchedColumn === dataIndex ? (
                 <Highlighter
@@ -86,36 +97,59 @@ const FileBrowserColumns = (setChosenFileKey: (key: string) => ISetChosenFileKey
 
     const columns: ColumnsType<IFileBrowserAntdTable> = [
         {
-            title: "Type",
-            width: 50,
-            dataIndex: FileBrowserColumnDataIndexEnum.TYPE,
-        },
-        {
-            title: "File Name",
-            width: 200,
+            title: t("file-browser.file-name"),
+            width: 150,
             dataIndex: FileBrowserColumnDataIndexEnum.PUBLIC_FILE_NAME,
             ...getColumnSearchProps(FileBrowserColumnDataIndexEnum.PUBLIC_FILE_NAME),
         },
         {
-            title: "Action",
+            title: t("file-browser.action"),
             width: 50,
             dataIndex: FileBrowserColumnDataIndexEnum.ACTIONS,
             align: 'center',
             render: (text, record, index) => (
-                <Space direction="horizontal">
-                    <Tooltip title="View" placement="top">
-                        <Button
-                            shape="circle"
-                            size="small"
-                            icon={<EyeOutlined/>}
-                            // onClick={() => {
-                            //
-                            // }}
-                        />
-                    </Tooltip>
-                    <Tooltip title="Insert" placement="top">
+                <Fragment>
+                    {(store.getState().attachment.isPhotoFileBrowserActive
+                        || store.getState().attachment.isVideoFileBrowserActive) &&
+
+                    <Space direction="horizontal">
+                        <Tooltip title={t("file-browser.tooltip.view")} placement="top">
+                            <Button
+                                style={dir === DirectionActionTypeEnum.RTL ? {lineHeight: 1.9} : {lineHeight: "initial"}}
+                                shape="circle"
+                                size="small"
+                                icon={<EyeOutlined/>}
+                                onClick={() => {
+                                    setChosenFileKey(agent.Attachments.getFilePrependUrl() + record.fileName);
+                                    if (store.getState().attachment.isVideoFileBrowserActive) {
+                                        setLastSelectedVideoFileMimeType(record.mimeType!);
+                                    }
+                                    store.dispatch(setIsFilePreviewModalVisible(true))
+                                }}
+                            />
+                        </Tooltip>
+                        <Tooltip title={t("file-browser.tooltip.insert")} placement="top">
+                            <Button
+                                className="insertFileToMce"
+                                style={dir === DirectionActionTypeEnum.RTL ? {lineHeight: 1.9} : {lineHeight: "initial"}}
+                                type="primary"
+                                shape="circle"
+                                size="small"
+                                icon={<PlusOutlined/>}
+                                onClick={() => {
+                                    setChosenFileKey(agent.Attachments.getFilePrependUrl() + record.fileName);
+                                    onOkFileBrowserModal();
+                                }}
+                            />
+                        </Tooltip>
+                    </Space>
+                    }
+                    {(store.getState().attachment.isMiscellaneousFileBrowserActive
+                        || store.getState().attachment.isFileBrowserActive) &&
+                    <Tooltip title={t("file-browser.tooltip.insert")} placement="top">
                         <Button
                             className="insertFileToMce"
+                            style={dir === DirectionActionTypeEnum.RTL ? {lineHeight: 1.9} : {lineHeight: "initial"}}
                             type="primary"
                             shape="circle"
                             size="small"
@@ -126,7 +160,9 @@ const FileBrowserColumns = (setChosenFileKey: (key: string) => ISetChosenFileKey
                             }}
                         />
                     </Tooltip>
-                </Space>
+                    }
+                </Fragment>
+
             )
         }
     ];

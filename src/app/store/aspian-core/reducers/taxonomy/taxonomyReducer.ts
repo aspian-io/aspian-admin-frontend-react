@@ -20,16 +20,43 @@ export const taxonomyReducer = (state = initialState, action: TaxonomyAction) =>
         case TaxonomyActionTypes.LOAD_ANTD_TREESELECT_COMPATIBLE_CATEGORIES:
             return {...state, ...action.payload}
         case TaxonomyActionTypes.CREATE_CATEGORY:
-            const catsTreeSelect: ITreeData[] = Object.assign([], state.catsTreeSelect);
-            const parentCatIndex = !!action.payload.parentId ?
-                catsTreeSelect.findIndex(post => post.key === action.payload.parentId) : null;
-
-            !!parentCatIndex ?
-                catsTreeSelect[parentCatIndex].children.push(action.payload.newCatForTreeSelect) :
-                catsTreeSelect.push(action.payload.newCatForTreeSelect)
-
-            return {...state, ...action.payload, catsTreeSelect}
+            return {
+                ...state,
+                ...action.payload,
+                catsTreeSelect: getCatTreeSelect(
+                    state.catsTreeSelect,
+                    action.payload.newCatForTreeSelect,
+                    action.payload.parentId)
+            }
         default:
             return state;
     }
+}
+
+/// Utilities
+const getCatTreeSelect = (
+    catsTreeSelectState: ITreeData[],
+    newCategory: ITreeData,
+    parentId: string | null): ITreeData[] => {
+    //
+    if (catsTreeSelectState.length > 0) {
+        const catsTreeSelectObj: ITreeData[] = Object.assign([], catsTreeSelectState);
+        //
+        if (parentId) {
+            catsTreeSelectObj.forEach((category) => {
+                if (category.key === parentId) {
+                    category.children.push(newCategory);
+                    return catsTreeSelectObj;
+                } else {
+                    getCatTreeSelect(category.children, newCategory, parentId);
+                }
+            })
+            return catsTreeSelectObj;
+        } else {
+            catsTreeSelectObj.push(newCategory);
+            return catsTreeSelectObj;
+        }
+    }
+    //
+    return [];
 }

@@ -30,7 +30,8 @@ export type PostAction =
     | IPostSetPublishBtnTxtAction
     | ICreatePostSetUploadAsPublicAction
     | ICreatePostSetPostVisibilityAction
-    | ISetPostContentAction;
+    | ISetPostContentAction
+    | ICreatePostSetAddedFileNumberToUppyAction;
 
 /////////////
 /// Types ///
@@ -57,7 +58,8 @@ export enum PostActionTypes {
     POST_SET_TARGET_BTN = "POST_SET_TARGET_BTN",
     POST_SET_PUBLISH_BTN_TXT = "POST_SET_PUBLISH_BTN_TXT",
     CREATE_POST_SET_UPLOAD_AS_PUBLIC = "CREATE_POST_SET_UPLOAD_AS_PUBLIC",
-    CREATE_POST_SET_POST_VISIBILITY = "CREATE_POST_SET_POST_VISIBILITY"
+    CREATE_POST_SET_POST_VISIBILITY = "CREATE_POST_SET_POST_VISIBILITY",
+    CREATE_POST_SET_ADDED_FILE_NUMBER_TO_UPPY = "CREATE_POST_SET_ADDED_FILE_NUMBER_TO_UPPY"
 }
 
 ////////////////////
@@ -224,5 +226,12 @@ export interface ICreatePostSetPostVisibilityAction {
     type: PostActionTypes.CREATE_POST_SET_POST_VISIBILITY,
     payload: {
         postVisibility: string
+    }
+}
+
+export interface ICreatePostSetAddedFileNumberToUppyAction {
+    type: PostActionTypes.CREATE_POST_SET_ADDED_FILE_NUMBER_TO_UPPY,
+    payload: {
+        addedFileNumberToUppy: number
     }
 }

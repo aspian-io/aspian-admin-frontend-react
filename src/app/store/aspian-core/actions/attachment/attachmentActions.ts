@@ -16,6 +16,8 @@ import {
     ISetChosenFileKeyAction,
     ISetFileBrowserLoadingIndicatorAction,
     ISetIsFileBrowserVisibleAction,
+    ISetIsFilePreviewVisibleAction,
+    ISetLastSelectedVideoMimeTypeAction,
     ShowFileBrowserModalAction
 } from "./attachmentActionTypes";
 import agent from "../../../../api/aspian-core/agent";
@@ -147,6 +149,13 @@ export const setChosenFileKey = (key: string): ISetChosenFileKeyAction => {
     }
 }
 
+export const setLastSelectedVideoFileMimeType = (lastSelectedVideoMimeType: string): ISetLastSelectedVideoMimeTypeAction => {
+    return {
+        type: AttachmentActionTypes.SET_LAST_SELECTED_VIDEO_MIMETYPE,
+        payload: {lastSelectedVideoMimeType}
+    }
+}
+
 export const addNewUploadedFileToFileBrowser = (fileName: string, photoFileBrowserDataSource: IFileBrowser[],
                                                 videoFileBrowserDataSource: IFileBrowser[],
                                                 miscellaneousFileBrowserDataSource: IFileBrowser[],
@@ -239,6 +248,23 @@ export const addUploadedFileToMiscellaneousFileBrowser = (uploadedFile: IFileBro
             miscellaneousFileBrowserDataSource: updatedDataSource
         }
     }
+}
+
+export const setIsFilePreviewModalVisible = (isFilePreviewModalVisible: boolean): ISetIsFilePreviewVisibleAction => {
+    return {
+        type: AttachmentActionTypes.SET_IS_FILE_PREVIEW_VISIBLE,
+        payload: {
+            isFilePreviewModalVisible
+        }
+    }
+}
+
+export const onOkFilePreviewModal = () => (dispatch: Dispatch) => {
+    dispatch(setIsFilePreviewModalVisible(false));
+}
+
+export const onCancelFilePreviewModal = () => (dispatch:Dispatch) => {
+    dispatch(setIsFilePreviewModalVisible(false));
 }
 
 export const getUploadSettings = () => async (dispatch: Dispatch) => {

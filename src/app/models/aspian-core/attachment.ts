@@ -14,6 +14,7 @@ export interface IFileBrowser {
     publicFileName: string;
     fileExtension: string;
     type: AttachmentTypeEnum;
+    mimeType: string;
     uploadLocation: UploadLocationEnum;
     fileSize: number;
     createdAt: Date;

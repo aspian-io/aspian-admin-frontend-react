@@ -24,6 +24,7 @@ import core__postDetails_US_en from './en/aspian-core/post/postDetails/postDetai
 import core__postCreate_US_en from './en/aspian-core/post/postCreate/postCreate_US-en.json';
 import core__login_US_en from './en/aspian-core/user/login_US-en.json';
 import core__register_US_en from './en/aspian-core/user/register_US-en.json';
+import core__media_US_en from './en/aspian-core/media/media_US-en.json';
 
 // aspian-core ---> IR-fa translation files
 import core__common_IR_fa from './fa/aspian-core/common/common_IR-fa.json';
@@ -46,6 +47,7 @@ import core__postDetails_IR_fa from './fa/aspian-core/post/postDetails/postDetai
 import core__postCreate_IR_fa from './fa/aspian-core/post/postCreate/postCreate_IR-fa.json';
 import core__login_IR_fa from './fa/aspian-core/user/login_IR-fa.json';
 import core__register_IR_fa from './fa/aspian-core/user/register_IR-fa.json';
+import core__media_IR_fa from './fa/aspian-core/media/media_IR-fa.json';
 
 i18n
   .use(initReactI18next)
@@ -84,6 +86,7 @@ i18n
         core_postCreate: core__postCreate_US_en,
         core_login: core__login_US_en,
         core_register: core__register_US_en,
+        core_media: core__media_US_en
       },
       fa: {
         core_common: core__common_IR_fa,
@@ -106,6 +109,7 @@ i18n
         core_postCreate: core__postCreate_IR_fa,
         core_login: core__login_IR_fa,
         core_register: core__register_IR_fa,
+        core_media: core__media_IR_fa
       },
     },
     // have a common namespace used around the full app

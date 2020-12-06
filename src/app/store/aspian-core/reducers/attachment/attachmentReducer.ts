@@ -14,6 +14,8 @@ const initialState: IAttachmentStateType = {
     isFileBrowserVisible: false,
     lastChosenFileKey: "",
     uploadSettings: null,
+    isFilePreviewModalVisible: false,
+    lastSelectedVideoMimeType: ''
 }
 
 export const attachmentReducer = (state = initialState, action: AttachmentAction) => {
@@ -53,6 +55,10 @@ export const attachmentReducer = (state = initialState, action: AttachmentAction
         case AttachmentActionTypes.ADD_UPLOADED_FILE_TO_MISCELLANEOUS_FILES_DATASOURCE:
             return {...state, ...action.payload};
         case AttachmentActionTypes.GET_UPLOAD_SETTINGS:
+            return {...state, ...action.payload};
+        case AttachmentActionTypes.SET_IS_FILE_PREVIEW_VISIBLE:
+            return {...state, ...action.payload};
+        case AttachmentActionTypes.SET_LAST_SELECTED_VIDEO_MIMETYPE:
             return {...state, ...action.payload};
         default:
             return state;

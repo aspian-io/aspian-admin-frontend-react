@@ -1,13 +1,14 @@
 ////////////////////////
 /// Root Action Type ///
 ////////////////////////
-export type LocaleAction = IHandleChangeLanguageAction;
+export type LocaleAction = IHandleChangeLanguageAction | ISetIsLangBtnDisabledAction;
 
 /////////////
 /// Types ///
 /////////////
 export enum LocaleActionTypes {
-    CHANGE_LANGUAGE = "CHANGE_LANGUAGE"
+    CHANGE_LANGUAGE = "CHANGE_LANGUAGE",
+    SET_IS_LANG_BTN_DISABLED = "SET_IS_LANG_BTN_DISABLED"
 }
 
 ////////////////////
@@ -18,6 +19,13 @@ export interface IHandleChangeLanguageAction {
     payload: {
         lang: LanguageActionTypeEnum,
         dir: DirectionActionTypeEnum
+    };
+}
+
+export interface ISetIsLangBtnDisabledAction {
+    type: LocaleActionTypes.SET_IS_LANG_BTN_DISABLED;
+    payload: {
+        isLangBtnDisabled: boolean
     };
 }
 

@@ -1,4 +1,5 @@
 import {
+    ICreatePostSetAddedFileNumberToUppyAction,
     ICreatePostSetPostVisibilityAction,
     ICreatePostSetUploadAsPublicAction,
     IDeletePostAction,
@@ -30,6 +31,7 @@ import {ReactText} from "react";
 import {EventValue} from "rc-picker/lib/interface";
 import {Moment} from "moment";
 import {DayRange} from "react-modern-calendar-datepicker";
+import {setIsLangBtnDisabled} from "../locale/localeActions";
 
 export const setPostLoadingInitial = (loadingInitial: boolean): IPostLoadingInitialAction => {
     return {
@@ -276,4 +278,18 @@ export const setPostVisibility = (postVisibility: string): ICreatePostSetPostVis
         type: PostActionTypes.CREATE_POST_SET_POST_VISIBILITY,
         payload: {postVisibility}
     }
+}
+
+export const setCreatePostAddedFileNumberToUppy = (addedFileNumberToUppy: number) => (dispatch: Dispatch) => {
+    if(addedFileNumberToUppy > 0) {
+        dispatch<any>(setIsLangBtnDisabled(true));
+    } else {
+        dispatch<any>(setIsLangBtnDisabled(false));
+    }
+    dispatch<ICreatePostSetAddedFileNumberToUppyAction>({
+        type: PostActionTypes.CREATE_POST_SET_ADDED_FILE_NUMBER_TO_UPPY,
+        payload: {
+            addedFileNumberToUppy: addedFileNumberToUppy
+        }
+    })
 }

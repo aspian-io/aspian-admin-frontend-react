@@ -46,7 +46,7 @@ const AspianHeader: FC<IHeaderProps> = ({
     const {t} = useTranslation('core_header');
 
     const {collapsed} = sider;
-    const {dir, lang} = locale;
+    const {dir, lang, isLangBtnDisabled} = locale;
     const {user} = userState;
 
     const langOnChange = (lang: LanguageActionTypeEnum) => {
@@ -145,6 +145,7 @@ const AspianHeader: FC<IHeaderProps> = ({
                         style={{margin: '0 1rem'}}
                         onChange={langOnChange}
                         size="small"
+                        disabled={isLangBtnDisabled}
                     >
                         <Select.Option value={LanguageActionTypeEnum.en}>En</Select.Option>
                         <Select.Option value={LanguageActionTypeEnum.fa}>فا</Select.Option>

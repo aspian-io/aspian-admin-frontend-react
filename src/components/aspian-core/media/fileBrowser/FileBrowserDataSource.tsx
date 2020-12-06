@@ -21,7 +21,6 @@ const FileBrowserDataSource = (
             // Initializing columns data
             data.push({
                 key: file.id,
-                type: GetFileTypeIcon(file.type),
                 publicFileName: file.publicFileName,
                 fileName: file.fileName
             });
@@ -31,7 +30,6 @@ const FileBrowserDataSource = (
             // Initializing columns data
             data.push({
                 key: file.id,
-                type: GetFileTypeIcon(file.type),
                 publicFileName: file.publicFileName,
                 fileName: file.fileName
             });
@@ -41,7 +39,7 @@ const FileBrowserDataSource = (
             // Initializing columns data
             data.push({
                 key: file.id,
-                type: GetFileTypeIcon(file.type),
+                mimeType: file.mimeType,
                 publicFileName: file.publicFileName,
                 fileName: file.fileName
             });
@@ -51,7 +49,6 @@ const FileBrowserDataSource = (
             // Initializing columns data
             data.push({
                 key: file.id,
-                type: GetFileTypeIcon(file.type),
                 publicFileName: file.publicFileName,
                 fileName: file.fileName
             });

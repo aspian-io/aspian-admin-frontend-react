@@ -9,7 +9,7 @@ export const siderReducer = (state = initialState, action: SiderAction) => {
     switch (action.type) {
         case SiderActionTypes.TOGGLE_SIDER:
         case SiderActionTypes.TOGGLE_SIDER_ON_BREAKPOINT:
-            return action.payload;
+            return {...state, ...action.payload};
         default:
             return state;
     }

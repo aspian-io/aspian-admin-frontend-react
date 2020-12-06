@@ -71,11 +71,9 @@ const PostCreate: FC<IPostCreateProps> = ({publishBtnTxt, postEditorContent}) =>
     ///
     return (
         <Fragment>
-
             <Form id="addNewPostForm" name="addNewPostForm">
                 <input type="hidden" name="title"/>
                 <input type="hidden" name="subTitle"/>
-                <input type="hidden" name="media[]"/>
             </Form>
             <Row justify="space-between">
                 <Typography>

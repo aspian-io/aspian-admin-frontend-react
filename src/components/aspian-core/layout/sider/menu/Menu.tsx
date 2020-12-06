@@ -1,4 +1,4 @@
-import React, {FC, useContext} from 'react';
+import React, {FC} from 'react';
 import {toggle} from "../../../../../app/store/aspian-core/actions";
 import {Menu} from 'antd';
 import Logo from '../../../../../assets/Logo.svg';
@@ -30,7 +30,12 @@ const AspianMenu: FC<RouteComponentProps & IMenuProps> = ({location, toggle}) =>
             theme="dark"
             mode="inline"
             selectedKeys={[location.pathname]}
-            onSelect={({item, key, keyPath, selectedKeys, domEvent}) =>
+            onSelect={({
+                           item,
+                           key, keyPath,
+                           selectedKeys,
+                           domEvent
+                       }) =>
                 toggle(false)
             }
         >
@@ -49,7 +54,8 @@ const AspianMenu: FC<RouteComponentProps & IMenuProps> = ({location, toggle}) =>
                     {t('core_common:appName')}
                   </span>
             </Menu.Item>
-            <Menu.ItemGroup key="aspian-core" title={<span style={{color: "hsla(0,0%,100%,.2)"}}>{t('sections.main-section')}</span>}>
+            <Menu.ItemGroup key="aspian-core"
+                            title={<span style={{color: "hsla(0,0%,100%,.2)"}}>{t('sections.main-section')}</span>}>
                 <Menu.Item
                     key="/admin"
                     icon={<DashboardOutlined className="sider__menu-icon"/>}

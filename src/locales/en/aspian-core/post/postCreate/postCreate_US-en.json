@@ -50,6 +50,12 @@
           },
           "category-parent-select": {
             "placeholder": "-- Parent Category --"
+          },
+          "adding-success_message": "New category added successfully.",
+          "adding-error-messages": {
+            "term-name-error": "Category name is already exist. Please change it and try again.",
+            "else-error": "Problem adding new category. Please try again later.",
+            "antd-message-error": "Problem adding new category!"
           }
         }
       },

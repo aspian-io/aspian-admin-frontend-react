@@ -28,13 +28,16 @@ const initialDir = DirectionActionTypeEnum[localStorageInitialDir];
 
 const initialState: ILocaleStateType = {
     lang: initialLang,
-    dir: initialDir
+    dir: initialDir,
+    isLangBtnDisabled: false
 }
 
 export const localeReducer = (state = initialState, action: LocaleAction) => {
     switch (action.type) {
         case LocaleActionTypes.CHANGE_LANGUAGE:
-            return action.payload;
+            return {...state, ...action.payload};
+        case LocaleActionTypes.SET_IS_LANG_BTN_DISABLED:
+            return {...state, ...action.payload};
         default:
             return state;
     }

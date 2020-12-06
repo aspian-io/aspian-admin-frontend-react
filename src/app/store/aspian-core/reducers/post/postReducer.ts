@@ -1,6 +1,4 @@
 import {IPostStateType} from "./postReducerTypes";
-import {IPost} from "../../../../models/aspian-core/post";
-import {ITreeData} from "../../../../../components/aspian-core/post/postCreate/Categories";
 import {PostAction, PostActionTypes} from "../../actions";
 
 const initialState: IPostStateType = {
@@ -28,7 +26,8 @@ const initialState: IPostStateType = {
     targetBtn: '',
     publishBtnTxt: "Publish",
     createPostUploadAsPublic: false,
-    postVisibility: "public"
+    postVisibility: "public",
+    addedFileNumberToUppy: 0
 }
 
 export const postReducer = (state = initialState, action: PostAction) => {
@@ -44,9 +43,15 @@ export const postReducer = (state = initialState, action: PostAction) => {
         case PostActionTypes.GET_ANTD_TREESELECT_COMPATIBLE_POSTS:
             return {...state, ...action.payload};
         case PostActionTypes.DELETE_SELECTED_POSTS:
-            return {...state, ...action.payload, ...action.payload.ids.map((id) => state.posts.filter((post) => post.id !== id))};
+            return {...state,
+                    ...action.payload,
+                    ...action.payload.ids.map((id) => state.posts.filter((post) => post.id !== id))};
         case PostActionTypes.DELETE_SINGLE_POST:
-            return {...state, ...action.payload, postRegistry: state.posts.filter(post => post.id !== action.payload.id)};
+            return {
+                ...state,
+                ...action.payload,
+                postRegistry: state.posts.filter(post => post.id !== action.payload.id)
+            };
         case PostActionTypes.GET_SINGLE_POST:
             return {...state, ...action.payload}
         case PostActionTypes.SET_POST_CONTENT:
@@ -76,6 +81,8 @@ export const postReducer = (state = initialState, action: PostAction) => {
         case PostActionTypes.CREATE_POST_SET_UPLOAD_AS_PUBLIC:
             return {...state, ...action.payload}
         case PostActionTypes.CREATE_POST_SET_POST_VISIBILITY:
+            return {...state, ...action.payload}
+        case PostActionTypes.CREATE_POST_SET_ADDED_FILE_NUMBER_TO_UPPY:
             return {...state, ...action.payload}
         default:
             return state;

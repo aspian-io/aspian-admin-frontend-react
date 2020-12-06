@@ -1,5 +1,6 @@
 import {
     DirectionActionTypeEnum,
+    ISetIsLangBtnDisabledAction,
     LanguageActionTypeEnum,
     LocaleActionTypes,
     LocaleVariableEnum
@@ -36,5 +37,12 @@ export const handleChangeLanguage = (lang: LanguageActionTypeEnum = LanguageActi
                 dir: DirectionActionTypeEnum.RTL
             },
         }
+    }
+}
+
+export const setIsLangBtnDisabled = (isLangBtnDisabled: boolean) : ISetIsLangBtnDisabledAction => {
+    return {
+        type: LocaleActionTypes.SET_IS_LANG_BTN_DISABLED,
+        payload: {isLangBtnDisabled}
     }
 }

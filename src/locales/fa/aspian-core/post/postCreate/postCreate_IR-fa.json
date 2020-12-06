@@ -50,6 +50,12 @@
           },
           "category-parent-select": {
             "placeholder": "-- دسته مادر --"
+          },
+          "adding-success_message": "دسته جدید با موفقیت ایجاد شد.",
+          "adding-error-messages": {
+            "term-name-error": "نام دسته وارد شده تکراری است.",
+            "else-error": "ثبت دسته جدید ناموفق بود، لطفا بعدا دوباره تلاش کنید.",
+            "antd-message-error": "ثبت دسته ناموفق بود!"
           }
         }
       },

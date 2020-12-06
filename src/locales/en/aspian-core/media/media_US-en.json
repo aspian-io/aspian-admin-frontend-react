@@ -1,0 +1,15 @@
+{
+  "file-browser": {
+    "title": "File Browser",
+    "type": "Type",
+    "file-name": "File Name",
+    "action": "Action",
+    "search": "Search",
+    "reset": "Reset",
+    "search-input-placeholder": "Search File Name...",
+    "tooltip": {
+      "insert": "Insert",
+      "view": "View"
+    }
+  }
+}

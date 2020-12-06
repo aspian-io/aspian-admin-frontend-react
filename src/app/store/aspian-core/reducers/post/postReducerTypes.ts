@@ -31,4 +31,5 @@ export interface IPostStateType {
     publishBtnTxt: string;
     createPostUploadAsPublic: boolean;
     postVisibility: string;
+    addedFileNumberToUppy: number;
 }

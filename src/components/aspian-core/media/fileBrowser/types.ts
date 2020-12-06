@@ -1,6 +1,6 @@
 export interface IFileBrowserAntdTable {
     key: string;
-    type: JSX.Element;
+    mimeType?: string;
     fileName: string;
     publicFileName: string;
 }

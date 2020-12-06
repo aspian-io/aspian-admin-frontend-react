@@ -101,16 +101,15 @@ const Categories: FC<ICategoryProps> = ({taxonomy, createCategory, loadAntdTreeS
                                     setErrorMsg(null);
                                     clearSelectedNewCatParentTreeSelect();
                                     setIsAddNewCategoryBtnDisabled(true)
-                                    message.success('New category added successfully.');
-                                    //setCategoriesArray(Array.from(catTreeSelectRegistry.values()));
+                                    message.success(t("collapse.categories.content.add-new-category.adding-success_message"));
                                 })
                                 .catch((error: any) => {
                                     if (error.data.errors.TermName || error.data.errors.TermSlug) {
-                                        setErrorMsg("Category name is already exist. Please change it and try again.");
+                                        setErrorMsg(t("collapse.categories.content.add-new-category.adding-error-messages.term-name-error"));
                                     } else {
-                                        setErrorMsg("Problem adding new category. Please try again later.");
+                                        setErrorMsg(t("collapse.categories.content.add-new-category.adding-error-messages.else-error"));
                                     }
-                                    message.error('Problem adding new category');
+                                    message.error(t("collapse.categories.content.add-new-category.adding-error-messages.antd-message-error"));
                                 })
                         }
                         }>

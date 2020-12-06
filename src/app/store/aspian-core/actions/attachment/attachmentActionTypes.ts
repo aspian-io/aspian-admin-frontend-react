@@ -22,7 +22,9 @@ export type AttachmentAction =
     | IAddUploadedFileToPhotoFileBrowserDataSourceAction
     | IAddUploadedFileToVideoFileBrowserDataSourceAction
     | IAddUploadedFileToMiscellaneousFileBrowserDataSourceAction
-    | IGetUploadSettingsAction;
+    | IGetUploadSettingsAction
+    | ISetIsFilePreviewVisibleAction
+    | ISetLastSelectedVideoMimeTypeAction;
 
 /////////////
 /// Types ///
@@ -41,11 +43,13 @@ export enum AttachmentActionTypes {
     ON_OK_FILE_BROWSER_MODAL = "ON_OK_FILE_BROWSER_MODAL",
     ON_CANCEL_FILE_BROWSER_MODAL = "ON_CANCEL_FILE_BROWSER_MODAL",
     SET_CHOSEN_FILE_KEY = "SET_CHOSEN_FILE_KEY",
+    SET_IS_FILE_PREVIEW_VISIBLE = "SET_IS_FILE_PREVIEW_VISIBLE",
     ADD_UPLOADED_FILE_TO_FILES_DATASOURCE = "ADD_UPLOADED_FILE_TO_FILES_DATASOURCE",
     ADD_UPLOADED_FILE_TO_PHOTO_FILES_DATASOURCE = "ADD_UPLOADED_FILE_TO_PHOTO_FILES_DATASOURCE",
     ADD_UPLOADED_FILE_TO_VIDEO_FILES_DATASOURCE = "ADD_UPLOADED_FILE_TO_VIDEO_FILES_DATASOURCE",
     ADD_UPLOADED_FILE_TO_MISCELLANEOUS_FILES_DATASOURCE = "ADD_UPLOADED_FILE_TO_MISCELLANEOUS_FILES_DATASOURCE",
     GET_UPLOAD_SETTINGS = "GET_UPLOAD_SETTINGS",
+    SET_LAST_SELECTED_VIDEO_MIMETYPE = "SET_LAST_SELECTED_VIDEO_MIMETYPE"
 }
 
 ////////////////////
@@ -193,5 +197,19 @@ export interface IGetUploadSettingsAction {
     type: AttachmentActionTypes.GET_UPLOAD_SETTINGS,
     payload: {
         uploadSettings: IAttachmentUploadSettings
+    }
+}
+
+export interface ISetIsFilePreviewVisibleAction {
+    type: AttachmentActionTypes.SET_IS_FILE_PREVIEW_VISIBLE,
+    payload: {
+        isFilePreviewModalVisible: boolean
+    }
+}
+
+export interface ISetLastSelectedVideoMimeTypeAction {
+    type: AttachmentActionTypes.SET_LAST_SELECTED_VIDEO_MIMETYPE,
+    payload: {
+        lastSelectedVideoMimeType: string
     }
 }

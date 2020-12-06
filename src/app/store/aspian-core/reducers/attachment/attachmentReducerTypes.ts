@@ -13,4 +13,6 @@ export interface IAttachmentStateType {
     isFileBrowserVisible: boolean;
     lastChosenFileKey: string;
     uploadSettings: IAttachmentUploadSettings | null,
+    isFilePreviewModalVisible: boolean,
+    lastSelectedVideoMimeType: string
 }

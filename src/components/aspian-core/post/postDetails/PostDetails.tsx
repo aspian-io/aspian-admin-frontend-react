@@ -71,7 +71,7 @@ const PostDetails: FC<PostDetailsProps> = ({
     }
 
     // To delete a post
-    const ondDeleteBtnClick = async (id: string) => {
+    const onDeleteBtnClick = async (id: string) => {
         try {
             await deletePost(id);
             message.success(t('messages.post-deleting-success'));
@@ -102,7 +102,7 @@ const PostDetails: FC<PostDetailsProps> = ({
                 <Popconfirm
                     key={uuidv4()}
                     title={t('popconfirm.title')}
-                    onConfirm={() => ondDeleteBtnClick(post!.id)}
+                    onConfirm={() => onDeleteBtnClick(post!.id)}
                     okText={t('popconfirm.ok-text')}
                     cancelText={t('popconfirm.cancel-text')}
                     placement={lang === LanguageActionTypeEnum.en ? 'left' : 'right'}
