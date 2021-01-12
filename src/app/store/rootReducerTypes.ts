@@ -1,10 +1,11 @@
-import {IResultPageStateType} from "./aspian-core/reducers/layout/result/resultPageReducerTypes";
-import {ILocaleStateType} from "./aspian-core/reducers/locale/localeReducerTypes";
-import {IUserStateType} from "./aspian-core/reducers/user/userReducerTypes";
-import {ITaxonomyStateType} from "./aspian-core/reducers/taxonomy/taxonomyReducerTypes";
-import {ISiderStateType} from "./aspian-core/reducers/layout/sider/siderReducerTypes";
-import {IAttachmentStateType} from "./aspian-core/reducers/attachment/attachmentReducerTypes";
-import {IPostStateType} from "./aspian-core/reducers/post/postReducerTypes";
+import {IResultPageStateType} from "./reducers/layout/result/resultPageReducerTypes";
+import {ILocaleStateType} from "./reducers/locale/localeReducerTypes";
+import {IUserStateType} from "./reducers/user/userReducerTypes";
+import {ITaxonomyStateType} from "./reducers/taxonomy/taxonomyReducerTypes";
+import {ISiderStateType} from "./reducers/layout/sider/siderReducerTypes";
+import {IAttachmentStateType} from "./reducers/attachment/attachmentReducerTypes";
+import {IPostStateType} from "./reducers/post/postReducerTypes";
+import {ISiteStateType} from "./reducers/site/siteReducerTypes";
 
 export interface IStoreState {
     sider: ISiderStateType;
@@ -13,5 +14,6 @@ export interface IStoreState {
     userState: IUserStateType,
     taxonomy: ITaxonomyStateType,
     attachment: IAttachmentStateType,
-    post: IPostStateType
+    post: IPostStateType,
+    site: ISiteStateType
 }

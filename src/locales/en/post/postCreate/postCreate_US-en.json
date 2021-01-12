@@ -1,0 +1,109 @@
+{
+  "title": "Add New Post",
+  "description": "You can add new post in this page.",
+  "inputs": {
+    "title": {
+      "placeholder": "Title"
+    },
+    "subtitle": {
+      "placeholder": "Subtitle"
+    }
+  },
+  "messages": {
+    "error": "Error",
+    "success": "Success",
+    "post-creation-success-msg": "Post created successfully.",
+    "post-creation-error-msg": "There was a problem creating the post.",
+    "post-modification-success-msg": "Post updated successfully.",
+    "post-modification-error-msg": "There was a problem updating the post.",
+    "title-required-msg": "Please input post title!",
+    "duplicate-title-msg": "Title is duplicated. Please use another title and try again."
+  },
+  "button": {
+    "publish": "Publish",
+    "schedule": "Schedule...",
+    "update": "Update"
+  },
+  "collapse": {
+    "status-and-visibility": {
+      "title": "Status & Visibility",
+      "content": {
+        "visibility": {
+          "name": "Visibility",
+          "options": {
+            "public": "Public",
+            "private": "Private"
+          }
+        },
+        "publish": {
+          "name": "Publish",
+          "buttons": {
+            "immediately": "Immediately",
+            "schedule": "Schedule"
+          }
+        },
+        "checkboxes": {
+          "pinned-to-top": "Pinned to the top of the blog",
+          "pending": "Pending review"
+        }
+      }
+    },
+    "categories": {
+      "title": "Categories",
+      "content": {
+        "category-tree-select": {
+          "placeholder": "Please select categories..."
+        },
+        "add-new-category": {
+          "name": "Add New Category",
+          "category-name-input": {
+            "placeholder": "New Category Name"
+          },
+          "category-parent-select": {
+            "placeholder": "-- Parent Category --"
+          },
+          "adding-success_message": "New category added successfully.",
+          "adding-error-messages": {
+            "term-name-error": "Category name is already exist. Please change it and try again.",
+            "else-error": "Problem adding new category. Please try again later.",
+            "antd-message-error": "Problem adding new category!"
+          }
+        }
+      },
+      "button": "Add New Category"
+    },
+    "tags": {
+      "title": "Tags",
+      "button": "New Tag"
+    },
+    "attachments": {
+      "title": "Add Media",
+      "button": "Upload"
+    },
+    "featured-media": {
+      "title": "Featured Media",
+      "image-card": {
+        "action-txt": "Add Image"
+      },
+      "video-card": {
+        "action-txt": "Add Video"
+      },
+      "popconfirm-question": "Are you sure you want to remove this one?",
+      "ok-txt": "Ok",
+      "cancel-txt": "Cancel",
+      "remove-tooltip": "Remove"
+    },
+    "excerpt": {
+      "title": "Excerpt",
+      "content": {
+        "description": "Write an excerpt (optional)"
+      }
+    },
+    "discussion": {
+      "title": "Discussion",
+      "checkboxes": {
+        "allow-comments": "Allow Comments"
+      }
+    }
+  }
+}

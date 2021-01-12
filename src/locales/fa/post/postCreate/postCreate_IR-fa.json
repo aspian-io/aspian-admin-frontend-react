@@ -1,0 +1,109 @@
+{
+  "title": "افزودن نوشته",
+  "description": "شما از طریق این صفحه می توانید یک نوشته جدید اضافه کنید.",
+  "inputs": {
+    "title": {
+      "placeholder": "عنوان اصلی"
+    },
+    "subtitle": {
+      "placeholder": "عنوان فرعی"
+    }
+  },
+  "messages": {
+    "error": "خطا",
+    "success": "موفقیت آمیز",
+    "post-creation-success-msg": "نوشته با موفقیت ثبت گردید.",
+    "post-creation-error-msg": "ثبت نوشته ناموفق بود.",
+    "post-modification-success-msg": "نوشته با موفقیت بروزرسانی گردید.",
+    "post-modification-error-msg": "بروزرسانی نوشته ناموفق بود.",
+    "title-required-msg": "لطفا عنوان را وارد نمایید!",
+    "duplicate-title-msg": "عنوان تکراری است. لطفا عنوان دیگری استفاده کنید."
+  },
+  "button": {
+    "publish": "انتشار",
+    "schedule": "زمان بندی...",
+    "update": "بروزرسانی"
+  },
+  "collapse": {
+    "status-and-visibility": {
+      "title": "وضعیت و قابلیت مشاهده",
+      "content": {
+        "visibility": {
+          "name": "قابلیت مشاهده",
+          "options": {
+            "public": "عمومی",
+            "private": "اختصاصی"
+          }
+        },
+        "publish": {
+          "name": "انتشار",
+          "buttons": {
+            "immediately": "فوری",
+            "schedule": "زمان بندی"
+          }
+        },
+        "checkboxes": {
+          "pinned-to-top": "چسباندن به بالای بلاگ",
+          "pending": "در انتظار بازبینی"
+        }
+      }
+    },
+    "categories": {
+      "title": "دسته‌ها",
+      "content": {
+        "category-tree-select": {
+          "placeholder": "لطفا دسته‌ها را انتخاب نمایید..."
+        },
+        "add-new-category": {
+          "name": "افزودن دسته جدید",
+          "category-name-input": {
+            "placeholder": "نام دسته جدید"
+          },
+          "category-parent-select": {
+            "placeholder": "-- دسته مادر --"
+          },
+          "adding-success_message": "دسته جدید با موفقیت ایجاد شد.",
+          "adding-error-messages": {
+            "term-name-error": "نام دسته وارد شده تکراری است.",
+            "else-error": "ثبت دسته جدید ناموفق بود، لطفا بعدا دوباره تلاش کنید.",
+            "antd-message-error": "ثبت دسته ناموفق بود!"
+          }
+        }
+      },
+      "button": "افزودن دسته جدید"
+    },
+    "tags": {
+      "title": "برچسب‌ها",
+      "button": "برچسب جدید"
+    },
+    "attachments": {
+      "title": "افزودن رسانه",
+      "button": "آپلود"
+    },
+    "featured-media": {
+      "title": "رسانه های شاخص",
+      "image-card": {
+        "action-txt": "افزودن عکس"
+      },
+      "video-card": {
+        "action-txt": "افزودن ویدیو"
+      },
+      "popconfirm-question": "آیا از حذف این مورد اطمینان دارید؟",
+      "ok-txt": "تایید",
+      "cancel-txt": "انصراف",
+      "remove-tooltip": "حذف"
+    },
+    "excerpt": {
+      "title": "چکیده",
+      "content": {
+        "description": "چکیده نوشته را در اینجا تایپ کنید (اختیاری)"
+      }
+    },
+    "discussion": {
+      "title": "گفتگو",
+      "checkboxes": {
+        "allow-comments": "پذیرفتن دیدگاه"
+      }
+    }
+  }
+}

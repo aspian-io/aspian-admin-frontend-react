@@ -1,0 +1,18 @@
+.ant-table {
+  font-size: 0.7rem;
+
+  .ant-table-selection-col {
+    width: 60px;
+    min-width: 60px;
+  }
+
+  &-small {
+    font-size: 0.7rem !important;
+  }
+
+  &-rtl {
+    th.ant-table-column-has-sorters {
+      padding: 8px 8px !important;
+    }
+  }
+}

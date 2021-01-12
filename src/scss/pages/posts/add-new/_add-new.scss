@@ -1,0 +1,19 @@
+@import '../../../common/main';
+
+.add-new {
+  &__add-new-cat {
+    &--input {
+      @include placeholder {
+        font-size: 12px !important;
+      }
+    }
+  }
+}
+
+.post-category {
+  &__new-cat-name {
+    .ant-form-item-explain {
+      font-size: 12px;
+    }
+  }
+}

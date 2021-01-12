@@ -1,0 +1,153 @@
+{
+  "sections": {
+    "main-section": "بخش اصلی",
+    "store-section": "بخش فروشگاه",
+    "lms-section": "بخش آموزش مجازی",
+    "e-health-section": "بخش سلامت الکترونیک"
+  },
+  "items": {
+    "dashboard": {
+      "name": "پیشخوان",
+      "items": {}
+    },
+    "posts": {
+      "name": "نوشته‌ها",
+      "items": {
+        "all-posts": "همه نوشته‌ها",
+        "add-new": "افزودن نوشته",
+        "categories": "دسته‌ها",
+        "tags": "برچسب‌ها"
+      }
+    },
+    "media": {
+      "name": "رسانه",
+      "items": {
+        "library": "کتابخانه",
+        "add-new": "افزودن رسانه"
+      }
+    },
+    "pages": {
+      "name": "برگه‌ها",
+      "items": {
+        "all-pages": "همه برگه‌ها",
+        "add-new": "افزودن برگه"
+      }
+    },
+    "comments": {
+      "name": "دیدگاه‌ها",
+      "items": {}
+    },
+    "appearance": {
+      "name": "نمایش",
+      "items": {
+        "customize": "شخصی سازی",
+        "menus": "منوها"
+      }
+    },
+    "users": {
+      "name": "کاربران",
+      "items": {
+        "all-users": "همه کاربران",
+        "add-new": "افزودن کاربر",
+        "your-profile": "شناسنامه شما"
+      }
+    },
+    "settings": {
+      "name": "تنظیمات",
+      "items": {
+        "general": "همگانی",
+        "writing": "نوشتن",
+        "reading": "خواندن",
+        "discussion": "گفتگوها",
+        "media": "رسانه",
+        "permalinks": "پیوندهای یکتا"
+      }
+    },
+    "reports": {
+      "name": "گزارشات",
+      "items": {
+        "users-activities": "فعالیت کاربران"
+      }
+    },
+
+    "sales": {
+      "name": "فروش",
+      "items": {
+        "orders": "سفارشات",
+        "invoices": "فاکتورها",
+        "shipments": "حمل و نقل",
+        "transactions": "تراکنش‌ها"
+      }
+    },
+    "catalog": {
+      "name": "فهرست",
+      "items": {
+        "products": "محصولات",
+        "categories": "دسته‌ها",
+        "monitoring": "نظارت",
+        "attrs-and-features": "خصوصیات و امکانات",
+        "brands-and-suppliers": "برندها و تامین کننده‌ها",
+        "discounts": "تخفیفات",
+        "stock": "موجودی کالا"
+      }
+    },
+    "customer-service": {
+      "name": "خدمات مشتریان",
+      "items": {
+        "customer-service": "خدمات مشتریان",
+        "order-messages": "درخواست موجودی",
+        "merchandise-returns": "بازگشت کالا"
+      }
+    },
+    "marketing": {
+      "name": "بازاریابی",
+      "items": {
+        "coupons": "کوپن‌ها",
+        "newsletter-queue": "صف خبرنامه",
+        "newsletter-subscribers": "مشترکین خبرنامه"
+      }
+    },
+
+    "calendar": {
+      "name": "تقویم",
+      "items": {}
+    },
+    "teachers": {
+      "name": "مدرسین",
+      "items": {}
+    },
+    "students": {
+      "name": "دانش‌آموزان",
+      "items": {}
+    },
+    "courses": {
+      "name": "دوره‌ها",
+      "items": {}
+    },
+    "badges": {
+      "name": "نشان‌ها",
+      "items": {}
+    },
+    "competencies": {
+      "name": "مدارک",
+      "items": {}
+    },
+
+    "doctors": {
+      "name": "درمانگران",
+      "items": {}
+    },
+    "patients": {
+      "name": "بیماران",
+      "items": {}
+    },
+    "appointments": {
+      "name": "وقت‌های ملاقات",
+      "items": {}
+    },
+    "prescriptions": {
+      "name": "تجویز‌ها",
+      "items": {}
+    }
+  }
+}

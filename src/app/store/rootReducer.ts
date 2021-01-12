@@ -1,12 +1,13 @@
 import {combineReducers} from "redux";
-import {siderReducer} from "./aspian-core/reducers/layout/sider/siderReducer";
+import {siderReducer} from "./reducers/layout/sider/siderReducer";
 import {IStoreState} from "./rootReducerTypes";
-import {resultPageReducer} from "./aspian-core/reducers/layout/result/resultPageReducer";
-import {localeReducer} from "./aspian-core/reducers/locale/localeReducer";
-import {userReducer} from "./aspian-core/reducers/user/userReducer";
-import {taxonomyReducer} from "./aspian-core/reducers/taxonomy/taxonomyReducer";
-import {attachmentReducer} from "./aspian-core/reducers/attachment/attachmentReducer";
-import {postReducer} from "./aspian-core/reducers/post/postReducer";
+import {resultPageReducer} from "./reducers/layout/result/resultPageReducer";
+import {localeReducer} from "./reducers/locale/localeReducer";
+import {userReducer} from "./reducers/user/userReducer";
+import {taxonomyReducer} from "./reducers/taxonomy/taxonomyReducer";
+import {attachmentReducer} from "./reducers/attachment/attachmentReducer";
+import {postReducer} from "./reducers/post/postReducer";
+import {siteReducer} from "./reducers/site/siteReducer";
 
 const reducers = combineReducers<IStoreState>({
     sider: siderReducer,
@@ -15,7 +16,8 @@ const reducers = combineReducers<IStoreState>({
     userState: userReducer,
     taxonomy: taxonomyReducer,
     attachment: attachmentReducer,
-    post: postReducer
+    post: postReducer,
+    site: siteReducer
 });
 
 export default reducers;

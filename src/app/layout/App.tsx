@@ -1,5 +1,5 @@
 import React, {FC, Fragment, useEffect} from 'react';
-import {Redirect, Route, Switch} from 'react-router-dom';
+import {Redirect, Route, withRouter, Switch, RouteComponentProps} from 'react-router-dom';
 
 import {connect} from "react-redux";
 import {
@@ -8,37 +8,37 @@ import {
     LanguageActionTypeEnum,
     onLayoutBreakpoint,
     setAppLoaded
-} from "../store/aspian-core/actions";
+} from "../store/actions";
 import {IStoreState} from "../store/rootReducerTypes";
 
 import i18n from '../../locales/i18n';
 import enUS from 'antd/es/locale/en_US';
 import faIR from 'antd/es/locale/fa_IR';
-import '../../scss/aspian-core/base/_font-fa.scss';
+import '../../scss/base/_font-fa.scss';
 
 import {ConfigProvider, Layout, Spin} from 'antd';
 import 'antd/dist/antd.css';
 
-import Dashboard from '../../components/aspian-core/dashboard/Dashboard';
-import AspianHeader from '../../components/aspian-core/layout/header/Header';
-import AspianBreadcrumb from '../../components/aspian-core/layout/breadcrumb/AspianBreadcrumb';
-import AspianSider from '../../components/aspian-core/layout/sider/Sider';
-import AspianFooter from '../../components/aspian-core/layout/footer/Footer';
-import PostList from '../../components/aspian-core/post/postList/PostList';
-import PostDetails from '../../components/aspian-core/post/postDetails/PostDetails';
-import PostCreate from '../../components/aspian-core/post/postCreate/PostCreate';
-import Login from '../../components/aspian-core/user/Login';
-import Register from '../../components/aspian-core/user/Register';
-import ResultPage from '../../components/aspian-core/layout/result/ResultPage';
-import BadRequest from '../../components/aspian-core/layout/result/BadRequest';
-import NotFound from '../../components/aspian-core/layout/result/NotFound';
-import ServerError from '../../components/aspian-core/layout/result/ServerError';
-import NetworkProblem from '../../components/aspian-core/layout/result/NetworkProblem';
-import Unauthorized401 from '../../components/aspian-core/layout/result/Unauthorized401';
-import Unauthorized403 from '../../components/aspian-core/layout/result/Unauthorized403';
+import Dashboard from '../../components/dashboard/Dashboard';
+import AspianHeader from '../../components/layout/header/Header';
+import AspianBreadcrumb from '../../components/layout/breadcrumb/AspianBreadcrumb';
+import AspianSider from '../../components/layout/sider/Sider';
+import AspianFooter from '../../components/layout/footer/Footer';
+import PostList from '../../components/post/postList/PostList';
+import PostDetails from '../../components/post/postDetails/PostDetails';
+import PostCreate from '../../components/post/postCreate/PostCreate';
+import Login from '../../components/user/Login';
+import Register from '../../components/user/Register';
+import ResultPage from '../../components/layout/result/ResultPage';
+import BadRequest from '../../components/layout/result/BadRequest';
+import NotFound from '../../components/layout/result/NotFound';
+import ServerError from '../../components/layout/result/ServerError';
+import NetworkProblem from '../../components/layout/result/NetworkProblem';
+import Unauthorized401 from '../../components/layout/result/Unauthorized401';
+import Unauthorized403 from '../../components/layout/result/Unauthorized403';
 
-import {ILocaleStateType} from "../store/aspian-core/reducers/locale/localeReducerTypes";
-import {IUserStateType} from "../store/aspian-core/reducers/user/userReducerTypes";
+import {ILocaleStateType} from "../store/reducers/locale/localeReducerTypes";
+import {IUserStateType} from "../store/reducers/user/userReducerTypes";
 
 interface IAppProps {
     onLayoutBreakpoint: typeof onLayoutBreakpoint;
@@ -48,7 +48,7 @@ interface IAppProps {
     setAppLoaded: Function;
 }
 
-const App: FC<IAppProps> = ({locale, onLayoutBreakpoint, userState, getCurrentUser, setAppLoaded}) => {
+const App: FC<IAppProps & RouteComponentProps> = ({locale, onLayoutBreakpoint, userState, getCurrentUser, setAppLoaded, location}) => {
     const {lang, dir} = locale;
     const {isAppLoaded, user} = userState;
     const {Content} = Layout;
@@ -139,7 +139,8 @@ const App: FC<IAppProps> = ({locale, onLayoutBreakpoint, userState, getCurrentUs
                                                     component={PostDetails}
                                                 />
                                                 <Route
-                                                    path="/admin/posts/add-new"
+                                                    key={location.key}
+                                                    path={["/admin/posts/add-new", "/admin/posts/edit/:id"]}
                                                     component={PostCreate}
                                                 />
                                                 <Route path="/badrequest" component={BadRequest}/>
@@ -182,4 +183,4 @@ const mapDispatchToProps = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(App);
+)(withRouter(App));

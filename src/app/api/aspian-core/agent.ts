@@ -1,15 +1,16 @@
 import axios from 'axios';
-import {IPost, IPostsEnvelope} from '../../models/aspian-core/post';
-import {IUser, IUserFormValues} from '../../models/aspian-core/user';
+import {IPost, IPostSubmitFormValues, IPostsEnvelope} from '../../models/post';
+import {IUser, IUserFormValues} from '../../models/user';
 import common from '../common';
 import {
     AttachmentTypeEnum,
     IAttachment,
     IAttachmentUploadSettings,
     IFileBrowser
-} from "../../models/aspian-core/attachment";
-import {ITaxonomy, TaxonomyTypeEnum} from "../../models/aspian-core/taxonomy";
-import {ITreeData} from "../../../components/aspian-core/post/postCreate/Categories";
+} from "../../models/attachment";
+import {ITaxonomy, TaxonomyTypeEnum} from "../../models/taxonomy";
+import {ITreeData} from "../../../components/post/postCreate/Categories";
+import {ISite, SiteTypeEnum} from "../../models/site";
 
 const {
     axiosRequestInterceptorHandleSuccess,
@@ -92,8 +93,8 @@ const Posts = {
     details: (id: string): Promise<IPost> =>
         requests.get(`/v1/posts/details/${id}`),
 
-    create: (post: IPost) => requests.post('/v1/posts/create', post),
-    update: (post: IPost) => requests.put(`/v1/posts/edit/${post.id}`, post),
+    create: (post: IPostSubmitFormValues) => requests.post('/v1/posts/create', post),
+    update: (post: IPostSubmitFormValues) => requests.put(`/v1/posts/edit/${post.id}`, post),
     delete: (ids: string[]) => requests.delItems('/v1/posts/delete', ids),
 };
 
@@ -107,9 +108,14 @@ const User = {
     logout: (): Promise<void> => requests.post('/v1/user/logout', {}),
 };
 
+const Site = {
+    details: (siteType: SiteTypeEnum): Promise<ISite> => requests.get(`/v1/sites/${siteType}`)
+}
+
 export default {
     Attachments,
     Taxonomies,
     Posts,
     User,
+    Site
 };

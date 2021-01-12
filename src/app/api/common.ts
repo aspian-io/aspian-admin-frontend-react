@@ -1,5 +1,5 @@
 import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
-import {IUser} from '../models/aspian-core/user';
+import {IUser} from '../models/user';
 import {history} from '../..';
 import {message} from 'antd';
 
